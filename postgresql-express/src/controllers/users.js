@@ -94,4 +94,43 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, updateUser };
+const deleteUser = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    const user = await client.query(
+      `
+            SELECT * FROM users
+            WHERE id = $1
+        `,
+      [req.params.id]
+    );
+
+    if (user.rows[0].username !== req.decoded.username) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
+
+    await client.query(
+      `
+        DELETE FROM users
+        WHERE id = $1
+    `,
+      [req.params.id]
+    );
+
+    await client.query("COMMIT");
+    return res.status(200).json("User deleted.");
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+    return res
+      .status(400)
+      .json({ status: "error", msg: "Error to delete user." });
+  } finally {
+    client.release();
+  }
+};
+
+module.exports = { getUsers, getUser, updateUser, deleteUser };
