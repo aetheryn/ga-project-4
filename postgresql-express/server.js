@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 // const pool = require("./src/db/db.js");
 const auth = require("./src/routers/auth.js");
+const users = require("./src/routers/users.js");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -34,6 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.get("/products", getProducts);
 
 app.use("/auth", auth);
+app.use("/users", users);
 
 const PORT = process.env.PORT || 5001;
 
