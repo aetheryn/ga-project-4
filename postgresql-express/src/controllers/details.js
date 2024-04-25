@@ -47,7 +47,7 @@ const addDetails = async (req, res) => {
     await client.query("BEGIN");
 
     if (req.body.doctorId != req.decoded.id) {
-      return res.status(401).json({ status: "error", msg: "Bleh." });
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
 
     await client.query(
@@ -85,4 +85,57 @@ const addDetails = async (req, res) => {
   }
 };
 
-module.exports = { getDetails, addDetails };
+const updateDetails = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const detail = await client.query(
+      `
+            SELECT * FROM visit_details
+            WHERE id = $1
+        `,
+      [req.params.id]
+    );
+
+    if (detail.rows[0].doctor_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Bleh." });
+    }
+
+    await client.query(
+      `
+      UPDATE visit_details
+      SET subjective = $1, objective = $2, assessment = $3, plan = $4
+      WHERE patient_id = $5 AND id = $6
+      `,
+      [
+        req.body.subjective,
+        req.body.objective,
+        req.body.assessment,
+        req.body.plan,
+        req.body.patientId,
+        req.params.id,
+      ]
+    );
+
+    await client.query("COMMIT");
+    return res
+      .status(200)
+      .json(
+        `Visit details updated for Patient ${req.body.patientId} on ${detail.rows[0].created_at}.`
+      );
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+
+    return res
+      .status(400)
+      .json({ status: "error", msg: "Error in updating visit details." });
+  } finally {
+    client.release();
+  }
+};
+
+module.exports = { getDetails, addDetails, updateDetails };
