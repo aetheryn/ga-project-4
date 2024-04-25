@@ -105,6 +105,7 @@ const login = async (req, res) => {
     }
 
     const claims = {
+      id: auth.rows[0].id,
       username: auth.rows[0].username,
       fullName: auth.rows[0].full_name,
       dateOfBirth: auth.rows[0].date_of_birth,
@@ -142,6 +143,7 @@ const refresh = async (req, res) => {
     const decoded = jwt.verify(req.body.refresh, process.env.REFRESH_SECRET);
 
     const claims = {
+      id: decoded.id,
       username: decoded.username,
       fullName: decoded.fullName,
       dateOfBirth: decoded.dateOfBirth,

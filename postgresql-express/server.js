@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 
 const auth = require("./src/routers/auth.js");
 const users = require("./src/routers/users.js");
+const details = require("./src/routers/details.js");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/auth", auth);
 app.use("/users", users);
+app.use("/details", details);
 
 const PORT = process.env.PORT || 5001;
 
