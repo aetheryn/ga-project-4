@@ -91,7 +91,7 @@ const updateDetails = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    const detail = await client.query(
+    const record = await client.query(
       `
             SELECT * FROM visit_details
             WHERE id = $1
@@ -99,8 +99,8 @@ const updateDetails = async (req, res) => {
       [req.params.id]
     );
 
-    if (detail.rows[0].doctor_id != req.decoded.id) {
-      return res.status(401).json({ status: "error", msg: "Bleh." });
+    if (record.rows[0].doctor_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
 
     await client.query(
@@ -138,4 +138,81 @@ const updateDetails = async (req, res) => {
   }
 };
 
-module.exports = { getDetails, addDetails, updateDetails };
+const deleteDetails = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const record = await client.query(
+      `
+            SELECT * FROM visit_details
+            WHERE id = $1
+        `,
+      [req.params.id]
+    );
+
+    if (record.rows[0].doctor_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Bleh." });
+    }
+
+    await client.query(
+      `
+      DELETE FROM visit_details
+      WHERE id = $1
+      `,
+      [req.params.id]
+    );
+
+    await client.query("COMMIT");
+    return res.status(200).json("Record deleted.");
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+    return res.status(400).json("Error in deleting.");
+  } finally {
+    client.release();
+  }
+};
+
+const getDetailsByPatient = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const details = await client.query(
+      `
+            SELECT * FROM visit_details
+            WHERE patient_id = $1
+        `,
+      [req.params.id]
+    );
+
+    if (req.decoded.role !== "DOCTOR" || req.decoded.id === req.params.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
+
+    await client.query("COMMIT");
+    return res.status(200).json(details.rows);
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+    return res.status(400).json({
+      status: "error",
+      msg: `Error in getting records for patient ${req.params.id}.`,
+    });
+  } finally {
+    client.release();
+  }
+};
+
+module.exports = {
+  getDetails,
+  addDetails,
+  updateDetails,
+  deleteDetails,
+  getDetailsByPatient,
+};
