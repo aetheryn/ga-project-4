@@ -1,9 +1,12 @@
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useContext, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { User } from "../interfaces/user";
+import UserContext from "../context/user";
+import { jwtDecode } from "jwt-decode";
 
 function LoginPage() {
   const fetchUsers = useFetch();
+  const userCtx = useContext(UserContext);
   const [username, setUsername] = useState<User["username"]>("");
   const [password, setPassword] = useState<string>("");
 
@@ -38,7 +41,10 @@ function LoginPage() {
 
       if (response.ok) {
         console.log(`${username} is successfully logged in.`);
-        console.log(response.data);
+
+        userCtx.setAccessToken(response.data.access);
+        const decoded = jwtDecode(response.data.access);
+        userCtx.setLoggedInUser(decoded);
       }
     } catch (error: any) {
       console.error(error.message);
@@ -54,6 +60,7 @@ function LoginPage() {
         ></input>
         <input
           placeholder="Enter password"
+          type="password"
           onChange={(event) => setPassword(event.target.value)}
         ></input>
         <button type="submit">Login</button>
