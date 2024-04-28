@@ -3,9 +3,11 @@ import useFetch from "../hooks/useFetch";
 import { User } from "../interfaces/user";
 import UserContext from "../context/user";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-function LoginPage() {
+function LoginPage(): JSX.Element {
   const fetchUsers = useFetch();
+  const navigate = useNavigate();
   const userCtx = useContext(UserContext);
   const [username, setUsername] = useState<User["username"]>("");
   const [password, setPassword] = useState<string>("");
@@ -29,8 +31,6 @@ function LoginPage() {
 
   async function handleLogin(event: SyntheticEvent) {
     event.preventDefault();
-
-    console.log("logging in");
     try {
       const response: any = await fetchUsers(
         "/auth/login",
@@ -45,6 +45,8 @@ function LoginPage() {
         userCtx.setAccessToken(response.data.access);
         const decoded = jwtDecode(response.data.access);
         userCtx.setLoggedInUser(decoded);
+
+        navigate("/main");
       }
     } catch (error: any) {
       console.error(error.message);
