@@ -10,12 +10,12 @@ import UserContext from "../context/user";
 interface ModalProps {
   record: Record;
   selectedUser: User;
-  setSelectedRecordId: (arg: null) => void;
+  setShowModal: (arg: boolean) => void;
   getAllRecords: () => void;
 }
 
 function Overlay(props: ModalProps): JSX.Element {
-  const { record, selectedUser, setSelectedRecordId, getAllRecords } = props;
+  const { record, selectedUser, setShowModal, getAllRecords } = props;
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   const subjRef = useRef<HTMLInputElement>(
@@ -76,7 +76,7 @@ function Overlay(props: ModalProps): JSX.Element {
 
             <Button
               className="return"
-              onClick={() => setSelectedRecordId(null)}
+              onClick={() => setShowModal(false)}
               style={{
                 backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -149,7 +149,7 @@ function Overlay(props: ModalProps): JSX.Element {
 function RecordModal({
   record,
   selectedUser,
-  setSelectedRecordId,
+  setShowModal,
   getAllRecords,
 }: ModalProps): JSX.Element {
   return (
@@ -158,7 +158,7 @@ function RecordModal({
         <Overlay
           record={record}
           selectedUser={selectedUser}
-          setSelectedRecordId={setSelectedRecordId}
+          setShowModal={setShowModal}
           getAllRecords={getAllRecords}
         ></Overlay>,
         document.querySelector("#modal-root")!

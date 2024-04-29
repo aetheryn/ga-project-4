@@ -20,7 +20,8 @@ function MainPage(): JSX.Element {
       );
 
       if (response.ok) {
-        setAllRecords(response.data);
+        const tempArray = [...response.data];
+        setAllRecords(tempArray.sort((a, b) => b.id - a.id));
       }
     } catch (error: any) {
       console.error(error.message);

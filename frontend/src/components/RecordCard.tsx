@@ -15,9 +15,7 @@ interface RecordCardProps {
 
 function RecordCard(props: RecordCardProps): JSX.Element {
   const { record, getAllRecords } = props;
-  const [selectedRecordId, setSelectedRecordId] = useState<Record["id"] | null>(
-    null
-  );
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User>({
     id: 0,
     username: "",
@@ -81,15 +79,15 @@ function RecordCard(props: RecordCardProps): JSX.Element {
 
   return (
     <>
-      {selectedRecordId === record.id && (
+      {showModal && (
         <RecordModal
           record={record}
           selectedUser={selectedUser}
-          setSelectedRecordId={setSelectedRecordId}
+          setShowModal={setShowModal}
           getAllRecords={getAllRecords}
         ></RecordModal>
       )}
-      <Card onClick={() => setSelectedRecordId(record.id)}>
+      <Card onClick={() => setShowModal(true)}>
         <CardContent style={{ display: "flex", gap: "2rem" }}>
           <h1>{selectedUser.full_name}</h1>
           <p>{record.subjective}</p>
