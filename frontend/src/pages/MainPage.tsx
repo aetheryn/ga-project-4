@@ -2,21 +2,12 @@ import { useEffect, useState } from "react";
 import RecordCard from "../components/RecordCard";
 import { Record } from "../interfaces/record";
 import useFetch from "../hooks/useFetch";
-import { User } from "../interfaces/user";
+import RecordForm from "../components/RecordForm";
+import { Button } from "@mui/material";
 
 function MainPage(): JSX.Element {
   const [allRecords, setAllRecords] = useState<Record[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User>({
-    id: 0,
-    username: "",
-    hash: "",
-    full_name: "",
-    date_of_birth: new Date(),
-    contact: 0,
-    address: "",
-    role: "",
-    pending_approval: false,
-  });
+  const [showForm, setShowForm] = useState<boolean>(false);
   const fetchData = useFetch();
 
   async function getAllRecords() {
@@ -42,18 +33,43 @@ function MainPage(): JSX.Element {
 
   return (
     <div>
-      {allRecords.map((record) => {
-        return (
-          <div className="cols-sm">
-            <RecordCard
-              record={record}
-              selectedUser={selectedUser}
-              setSelectedUser={setSelectedUser}
-              getAllRecords={getAllRecords}
-            ></RecordCard>
-          </div>
-        );
-      })}
+      {showForm && (
+        <>
+          <RecordForm
+            getAllRecords={getAllRecords}
+            setShowForm={setShowForm}
+          ></RecordForm>
+          <Button
+            onClick={() => {
+              setShowForm(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </>
+      )}
+
+      {!showForm && (
+        <>
+          <Button
+            onClick={() => {
+              setShowForm(true);
+            }}
+          >
+            Create New Entry
+          </Button>
+          {allRecords.map((record) => {
+            return (
+              <div className="cols-sm">
+                <RecordCard
+                  record={record}
+                  getAllRecords={getAllRecords}
+                ></RecordCard>
+              </div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 }

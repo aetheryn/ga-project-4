@@ -10,16 +10,25 @@ import UserContext from "../context/user";
 
 interface RecordCardProps {
   record: Record;
-  selectedUser: User;
-  setSelectedUser: (user: User) => void;
   getAllRecords: () => void;
 }
 
 function RecordCard(props: RecordCardProps): JSX.Element {
-  const { record, selectedUser, setSelectedUser, getAllRecords } = props;
+  const { record, getAllRecords } = props;
   const [selectedRecordId, setSelectedRecordId] = useState<Record["id"] | null>(
     null
   );
+  const [selectedUser, setSelectedUser] = useState<User>({
+    id: 0,
+    username: "",
+    hash: "",
+    full_name: "",
+    date_of_birth: new Date(),
+    contact: 0,
+    address: "",
+    role: "",
+    pending_approval: false,
+  });
   const fetchData = useFetch();
   const userCtx = useContext(UserContext);
 
