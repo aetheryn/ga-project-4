@@ -51,6 +51,35 @@ const getUser = async (req, res) => {
   }
 };
 
+const getUserByFullname = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    const user = await client.query(
+      `
+    SELECT id FROM users
+    WHERE full_name = $1
+    `,
+      [req.body.fullName]
+    );
+
+    await client.query("COMMIT");
+
+    return res.status(200).json(user.rows[0]);
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+    return res.status(400).json({
+      status: "error",
+      msg: `Error in getting user ${req.body.fullName}.`,
+    });
+  } finally {
+    client.release();
+  }
+};
+
 const updateUser = async (req, res) => {
   const client = await pool.connect();
   try {
@@ -133,4 +162,10 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, updateUser, deleteUser };
+module.exports = {
+  getUsers,
+  getUser,
+  getUserByFullname,
+  updateUser,
+  deleteUser,
+};
