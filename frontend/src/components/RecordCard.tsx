@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 // import { Button } from "@mui/material";
@@ -6,6 +6,7 @@ import { Record } from "../interfaces/record";
 import useFetch from "../hooks/useFetch";
 import { User } from "../interfaces/user";
 import RecordModal from "./RecordModal";
+import UserContext from "../context/user";
 
 interface RecordCardProps {
   record: Record;
@@ -20,6 +21,7 @@ function RecordCard(props: RecordCardProps): JSX.Element {
     null
   );
   const fetchData = useFetch();
+  const userCtx = useContext(UserContext);
 
   function handleUserSelect(user: User): void {
     setSelectedUser(user);
@@ -29,6 +31,23 @@ function RecordCard(props: RecordCardProps): JSX.Element {
   //   console.log("Button clicked.");
   //   setSelectedRecord(true);
   // }
+
+  async function handleDelete() {
+    try {
+      const response: any = await fetchData(
+        "/details/" + record.id,
+        "DELETE",
+        undefined,
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        getAllRecords();
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
 
   async function getPatientParticulars() {
     try {
@@ -69,6 +88,16 @@ function RecordCard(props: RecordCardProps): JSX.Element {
           <p>{record.assessment}</p>
           <p>{record.plan}</p>
         </CardContent>
+        <button
+          onClick={handleDelete}
+          style={{
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            zIndex: "10",
+          }}
+        >
+          &#x2715;
+        </button>
       </Card>
     </>
   );
