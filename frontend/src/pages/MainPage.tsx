@@ -41,7 +41,7 @@ function MainPage(): JSX.Element {
   }, []);
 
   return (
-    <div className="row">
+    <div>
       {allRecords.map((record) => {
         return (
           <div className="cols-sm">
@@ -49,6 +49,7 @@ function MainPage(): JSX.Element {
               record={record}
               selectedUser={selectedUser}
               setSelectedUser={setSelectedUser}
+              getAllRecords={getAllRecords}
             ></RecordCard>
           </div>
         );

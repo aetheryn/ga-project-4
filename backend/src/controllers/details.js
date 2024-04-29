@@ -91,7 +91,7 @@ const updateDetails = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    const record = await client.query(
+    const detail = await client.query(
       `
             SELECT * FROM visit_details
             WHERE id = $1
@@ -99,8 +99,8 @@ const updateDetails = async (req, res) => {
       [req.params.id]
     );
 
-    if (record.rows[0].doctor_id != req.decoded.id) {
-      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    if (detail.rows[0].doctor_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Blah." });
     }
 
     await client.query(
