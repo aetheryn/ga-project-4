@@ -5,6 +5,7 @@ function LeftBar(): JSX.Element {
   return (
     <div className={styles.navbar}>
       <div className={styles.navlinks}>
+        <h1>MedTrack</h1>
         <li>
           <NavLink
             className={(navData) => (navData.isActive ? styles.active : "")}

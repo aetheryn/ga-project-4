@@ -110,6 +110,7 @@ function Registration(): JSX.Element {
 
           <label>Date of Birth</label>
           <input
+            required
             id="date-of-birth"
             ref={dateOfBirthRef}
             className="auth-input"
@@ -119,6 +120,7 @@ function Registration(): JSX.Element {
 
           <label>Contact</label>
           <input
+            required
             id="contact"
             ref={contactRef}
             className="auth-input"
@@ -128,6 +130,7 @@ function Registration(): JSX.Element {
 
           <label>Address</label>
           <textarea
+            required
             id="address"
             ref={addressRef}
             className="auth-input"
@@ -138,12 +141,13 @@ function Registration(): JSX.Element {
 
           <label>Role</label>
           <select
+            required
             className="auth-input"
             id="role"
             onChange={(event) => handleSelect(event)}
           >
             <option disabled selected>
-              Select Role
+              --- Please select a role ---
             </option>
             <option value="DOCTOR">Doctor</option>
             <option value="PATIENT">Patient</option>

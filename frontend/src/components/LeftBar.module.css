@@ -26,6 +26,7 @@ li > a {
   text-align: left;
   text-indent: 1rem;
   border-radius: 20px;
+  border: white solid;
 }
 
 li > a:hover {

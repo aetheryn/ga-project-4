@@ -50,17 +50,27 @@ function App() {
         allUsers,
       }}
     >
-      {loggedInUser ? <LeftBar></LeftBar> : null}
-
-      <div className="main">
+      {!loggedInUser && (
         <Routes>
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="login" element={<LoginPage></LoginPage>} />
-          <Route path="main" element={<MainPage></MainPage>} />
           <Route path="register" element={<Registration></Registration>} />
-          <Route path="users" element={<UserMgt></UserMgt>} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
-      </div>
+      )}
+
+      {loggedInUser && (
+        <>
+          <LeftBar></LeftBar>
+          <div className="main">
+            <Routes>
+              <Route path="main" element={<MainPage></MainPage>} />
+              <Route path="users" element={<UserMgt></UserMgt>} />
+              <Route path="*" element={<Navigate replace to="/main" />} />
+            </Routes>
+          </div>
+        </>
+      )}
 
       {loggedInUser?.role === "DOCTOR" ? <RightBar></RightBar> : null}
     </UserContext.Provider>

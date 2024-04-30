@@ -16,8 +16,6 @@
 
 .centered {
   margin: 1.5em auto;
-  margin-left: -15%;
-  margin-right: -25%;
   text-align: center;
   display: grid;
   justify-content: center;
