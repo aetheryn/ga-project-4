@@ -68,6 +68,7 @@ function RecordCard(props: RecordCardProps): JSX.Element {
         style={{
           display: "block",
           margin: "1rem 0 0 0",
+          padding: "0.5rem",
           borderRadius: "20px",
         }}
       >

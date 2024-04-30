@@ -1,7 +1,7 @@
 .navbar {
   display: block;
   list-style-type: none;
-  width: 18%;
+  width: 15%;
   background-color: white;
   height: 100%;
   position: fixed;
@@ -11,7 +11,7 @@
 }
 
 .navlinks {
-  margin-top: 5%;
+  margin-top: 1rem;
 }
 
 li > a {

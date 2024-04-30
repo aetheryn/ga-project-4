@@ -12,6 +12,10 @@ function LoginPage(): JSX.Element {
   const [username, setUsername] = useState<User["username"]>("");
   const [password, setPassword] = useState<string>("");
 
+  function handleClick(): void {
+    navigate("/register");
+  }
+
   async function handleLogin(event: SyntheticEvent) {
     event.preventDefault();
     try {
@@ -37,22 +41,31 @@ function LoginPage(): JSX.Element {
   }
 
   return (
-    <>
-      <form id="loginpage" onSubmit={handleLogin}>
+    <div className="centered">
+      <h1>MedTrack</h1>
+      <form onSubmit={handleLogin} className="auth">
+        <label>Username</label>
         <input
+          className="login-input"
           placeholder="Enter username"
           onChange={(event) => setUsername(event.target.value)}
         ></input>
+        <label>Password</label>
         <input
+          className="login-input"
           placeholder="Enter password"
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         ></input>
-        <button type="submit">Login</button>
+        <button className="button login-button" type="submit">
+          Login
+        </button>
       </form>
 
-      {/* <button onClick={getAllUsers}>aa</button> */}
-    </>
+      <a className="register" onClick={handleClick}>
+        Not a user yet? Register here.
+      </a>
+    </div>
   );
 }
 

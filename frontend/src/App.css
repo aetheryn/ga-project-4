@@ -1,17 +1,27 @@
 #root {
-  max-width: 1280px;
+  /* width: 1280px; */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1em;
   text-align: center;
 }
 
 .main {
-  margin-left: 18%;
+  margin-left: 15%;
   margin-right: 25%;
 }
 
 .fullwidth {
-  width: 80%;
+  width: 90%;
+}
+
+.centered {
+  margin: 3rem auto;
+  margin-left: -15%;
+  margin-right: -25%;
+  text-align: center;
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }
 
 input {
@@ -19,6 +29,10 @@ input {
   padding: 0.5rem;
   border: solid #687169;
   border-radius: 10px;
+}
+
+input:focus {
+  outline: none;
 }
 
 textarea {
@@ -58,4 +72,37 @@ select {
 .button:hover {
   background-color: #78866b;
   color: #f4f3ef;
+}
+
+.auth {
+  text-align: start;
+}
+
+.auth > label {
+  font-weight: 700;
+}
+
+.login-input {
+  width: 100%;
+  padding: 1rem;
+  margin: 0.5rem 0 0.5rem 0;
+  box-sizing: border-box;
+  border: solid #687169;
+  border-radius: 10px;
+  font-size: 1em;
+}
+
+.login-button {
+  font-size: 1em;
+  width: 100%;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.register {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.register:hover {
+  text-decoration: underline;
 }

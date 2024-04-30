@@ -50,7 +50,7 @@ function App() {
         allUsers,
       }}
     >
-      <LeftBar></LeftBar>
+      {loggedInUser ? <LeftBar></LeftBar> : null}
 
       <div className="main">
         <Routes>
