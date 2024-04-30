@@ -4,10 +4,6 @@ import { NavLink } from "react-router-dom";
 function LeftBar(): JSX.Element {
   return (
     <div className={styles.navbar}>
-      <div className={styles.navicon}>
-        <div className={styles.icon}></div>
-      </div>
-
       <div className={styles.navlinks}>
         <li>
           <NavLink

@@ -7,9 +7,10 @@ import UserContext from "./context/user";
 import Registration from "./pages/Registration";
 import { User } from "./interfaces/user";
 import LeftBar from "./components/LeftBar";
+import RightBar from "./components/RightBar";
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState<User>();
   const [accessToken, setAccessToken] = useState<string>("");
 
   return (
@@ -26,6 +27,8 @@ function App() {
           <Route path="register" element={<Registration></Registration>} />
         </Routes>
       </div>
+
+      {loggedInUser?.role === "DOCTOR" ? <RightBar></RightBar> : null}
     </UserContext.Provider>
   );
 }
