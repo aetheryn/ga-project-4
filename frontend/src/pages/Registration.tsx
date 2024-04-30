@@ -25,7 +25,7 @@ function Registration(): JSX.Element {
   const contactRef = useRef<HTMLInputElement>(
     document.querySelector("#contact")
   );
-  const addressRef = useRef<HTMLInputElement>(
+  const addressRef = useRef<HTMLTextAreaElement>(
     document.querySelector("#address")
   );
 
@@ -36,9 +36,18 @@ function Registration(): JSX.Element {
 
   async function handleRegister() {
     try {
+      //   console.log(`{
+      //         username: ${usernameRef.current?.value},
+      //         password: ${passwordRef.current?.value},
+      //         fullName: ${fullNameRef.current?.value},
+      //         dateOfBirth: ${dateOfBirthRef.current?.value},
+      //         contact: ${contactRef.current?.value},
+      //         address: ${addressRef.current?.value},
+      //         role: ${role},
+      //       }`);
       const response: any = await fetchData(
         "/auth/register",
-        "POST",
+        "PUT",
         {
           username: usernameRef.current?.value,
           password: passwordRef.current?.value,
@@ -50,6 +59,8 @@ function Registration(): JSX.Element {
         },
         userCtx.accessToken
       );
+
+      console.log(response);
 
       if (response.ok) {
         setIsUserRegistered(true);
@@ -89,7 +100,7 @@ function Registration(): JSX.Element {
         <label>Address</label>
         <textarea
           id="address"
-          value={addressRef.current?.value}
+          ref={addressRef}
           className="fullwidth"
           rows={2}
         ></textarea>
@@ -106,7 +117,7 @@ function Registration(): JSX.Element {
           </select>
         </label>
 
-        <Button onClick={handleRegister}>Register</Button>
+        <Button onClick={() => handleRegister()}>Register</Button>
         <Button onClick={() => setIsUserRegistered(true)}>Return</Button>
       </form>
 
