@@ -12,7 +12,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@types/bootstrap": "^5.2.10",
+    "bootstrap": "^5.3.3",
     "jwt-decode": "^4.0.0",
     "jwt-decoder": "^0.0.0",
     "react": "^18.2.0",
