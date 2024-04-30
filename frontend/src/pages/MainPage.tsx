@@ -33,7 +33,7 @@ function MainPage(): JSX.Element {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       {showForm && (
         <>
           <RecordForm
@@ -67,6 +67,7 @@ function MainPage(): JSX.Element {
                 <RecordCard
                   record={record}
                   getAllRecords={getAllRecords}
+                  allRecords={allRecords}
                 ></RecordCard>
               </div>
             );

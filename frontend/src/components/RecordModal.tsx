@@ -10,12 +10,12 @@ import UserContext from "../context/user";
 interface ModalProps {
   record: Record;
   selectedUser: User;
-  setShowModal: (arg: boolean) => void;
+  setShowRecordModal: (arg: boolean) => void;
   getAllRecords: () => void;
 }
 
 function Overlay(props: ModalProps): JSX.Element {
-  const { record, selectedUser, setShowModal, getAllRecords } = props;
+  const { record, selectedUser, setShowRecordModal, getAllRecords } = props;
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   const subjRef = useRef<HTMLInputElement>(
@@ -30,23 +30,6 @@ function Overlay(props: ModalProps): JSX.Element {
   const fetchData = useFetch();
 
   const userCtx = useContext(UserContext);
-
-  async function handleDelete() {
-    try {
-      const response: any = await fetchData(
-        "/details/" + record.id,
-        "DELETE",
-        undefined,
-        userCtx.accessToken
-      );
-
-      if (response.ok) {
-        getAllRecords();
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
 
   async function updateDetails() {
     try {
@@ -93,7 +76,7 @@ function Overlay(props: ModalProps): JSX.Element {
 
             <Button
               className="return"
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowRecordModal(false)}
               style={{
                 backgroundColor: "transparent",
                 borderColor: "transparent",
@@ -101,17 +84,6 @@ function Overlay(props: ModalProps): JSX.Element {
             >
               &#x2190;
             </Button>
-
-            <button
-              onClick={handleDelete}
-              style={{
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-                zIndex: "10",
-              }}
-            >
-              &#x2715;
-            </button>
           </>
         )}
 
@@ -177,7 +149,7 @@ function Overlay(props: ModalProps): JSX.Element {
 function RecordModal({
   record,
   selectedUser,
-  setShowModal,
+  setShowRecordModal,
   getAllRecords,
 }: ModalProps): JSX.Element {
   return (
@@ -186,7 +158,7 @@ function RecordModal({
         <Overlay
           record={record}
           selectedUser={selectedUser}
-          setShowModal={setShowModal}
+          setShowRecordModal={setShowRecordModal}
           getAllRecords={getAllRecords}
         ></Overlay>,
         document.querySelector("#modal-root")!

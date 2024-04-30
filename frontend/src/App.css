@@ -117,3 +117,21 @@ select:focus {
 .register:hover {
   text-decoration: underline;
 }
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.delete-button {
+  background-color: transparent;
+  border-color: transparent;
+  z-index: 10;
+  float: right;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  font-weight: 700;
+  color: red;
+}

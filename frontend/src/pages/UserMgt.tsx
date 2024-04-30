@@ -6,7 +6,7 @@ import { Card } from "@mui/material";
 function UserMgt(): JSX.Element {
   const userCtx = useContext(UserContext);
   return (
-    <>
+    <div className="container">
       {userCtx.allUsers.map((user: User) => {
         return (
           <Card
@@ -16,7 +16,7 @@ function UserMgt(): JSX.Element {
           </Card>
         );
       })}
-    </>
+    </div>
   );
 }
 
