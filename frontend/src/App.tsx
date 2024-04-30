@@ -4,6 +4,9 @@ import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import { useState } from "react";
 import UserContext from "./context/user";
+import Registration from "./pages/Registration";
+import { User } from "./interfaces/user";
+import LeftBar from "./components/LeftBar";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({});
@@ -13,11 +16,16 @@ function App() {
     <UserContext.Provider
       value={{ loggedInUser, setLoggedInUser, accessToken, setAccessToken }}
     >
-      <Routes>
-        <Route path="/" element={<Navigate replace to="/login" />} />
-        <Route path="login" element={<LoginPage></LoginPage>} />
-        <Route path="main" element={<MainPage></MainPage>} />
-      </Routes>
+      <LeftBar></LeftBar>
+
+      <div className="main">
+        <Routes>
+          <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="login" element={<LoginPage></LoginPage>} />
+          <Route path="main" element={<MainPage></MainPage>} />
+          <Route path="register" element={<Registration></Registration>} />
+        </Routes>
+      </div>
     </UserContext.Provider>
   );
 }
