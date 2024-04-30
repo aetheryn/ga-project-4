@@ -136,7 +136,7 @@ const deleteUser = async (req, res) => {
       [req.params.id]
     );
 
-    if (user.rows[0].username !== req.decoded.username) {
+    if (req.decoded.role !== "DOCTOR") {
       return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
 
