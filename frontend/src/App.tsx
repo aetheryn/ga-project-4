@@ -5,7 +5,7 @@ import MainPage from "./pages/MainPage";
 import { useState } from "react";
 import UserContext from "./context/user";
 import Registration from "./pages/Registration";
-import { User } from "./interfaces/user";
+import { User } from "./classes/user";
 import LeftBar from "./components/LeftBar";
 import RightBar from "./components/RightBar";
 

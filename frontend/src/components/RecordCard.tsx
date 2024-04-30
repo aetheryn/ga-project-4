@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 // import { Button } from "@mui/material";
-import { Record } from "../interfaces/record";
+import { Record } from "../classes/record";
 import useFetch from "../hooks/useFetch";
-import { User } from "../interfaces/user";
+import { User } from "../classes/user";
 import RecordModal from "./RecordModal";
 import UserContext from "../context/user";
 
@@ -33,11 +33,6 @@ function RecordCard(props: RecordCardProps): JSX.Element {
   function handleUserSelect(user: User): void {
     setSelectedUser(user);
   }
-
-  // function handleClick(): void {
-  //   console.log("Button clicked.");
-  //   setSelectedRecord(true);
-  // }
 
   async function handleDelete() {
     try {

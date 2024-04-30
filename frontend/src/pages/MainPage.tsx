@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import RecordCard from "../components/RecordCard";
-import { Record } from "../interfaces/record";
+import { Record } from "../classes/record";
 import useFetch from "../hooks/useFetch";
 import RecordForm from "../components/RecordForm";
 import { Button } from "@mui/material";

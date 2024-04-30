@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
-import { Record } from "../interfaces/record";
-import { User } from "../interfaces/user";
+import { Record } from "../classes/record";
+import { User } from "../classes/user";
 import { useContext, useRef, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import useFetch from "../hooks/useFetch";

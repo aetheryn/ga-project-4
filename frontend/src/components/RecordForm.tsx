@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { TextField, Autocomplete, Button } from "@mui/material";
 import { useState } from "react";
-import { User } from "../interfaces/user";
+import { User } from "../classes/user";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 
@@ -17,7 +17,9 @@ function RecordForm(props: FormProps): JSX.Element {
   const fetchData = useFetch();
   const userCtx = useContext(UserContext);
 
-  const nameRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(
+    document.querySelector("#patient-name")
+  );
   const subjRef = useRef<HTMLInputElement>(
     document.querySelector("#subjective")
   );

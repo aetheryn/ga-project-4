@@ -1,6 +1,6 @@
 import { SyntheticEvent, useContext, useState } from "react";
 import useFetch from "../hooks/useFetch";
-import { User } from "../interfaces/user";
+import { User } from "../classes/user";
 import UserContext from "../context/user";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -11,23 +11,6 @@ function LoginPage(): JSX.Element {
   const userCtx = useContext(UserContext);
   const [username, setUsername] = useState<User["username"]>("");
   const [password, setPassword] = useState<string>("");
-
-  //   async function getAllUsers() {
-  //     try {
-  //       const response: any = await fetchUsers(
-  //         "/users",
-  //         "GET",
-  //         undefined,
-  //         undefined
-  //       );
-
-  //       if (response.ok) console.log(response);
-  //     } catch (error: any) {
-  //       if (error.name !== "AbortError") {
-  //         console.error(error.message);
-  //       }
-  //     }
-  //   }
 
   async function handleLogin(event: SyntheticEvent) {
     event.preventDefault();
