@@ -4,7 +4,11 @@ import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 import { Navigate } from "react-router-dom";
 
-function Registration(): JSX.Element {
+interface RegistrationProps {
+  getAllUsers: () => void;
+}
+
+function Registration({ getAllUsers }: RegistrationProps): JSX.Element {
   const fetchData = useFetch();
   const [role, setRole] = useState<string>("");
   const [isUserRegistered, setIsUserRegistered] = useState<boolean>(false);
@@ -36,15 +40,6 @@ function Registration(): JSX.Element {
 
   async function handleRegister() {
     try {
-      //   console.log(`{
-      //         username: ${usernameRef.current?.value},
-      //         password: ${passwordRef.current?.value},
-      //         fullName: ${fullNameRef.current?.value},
-      //         dateOfBirth: ${dateOfBirthRef.current?.value},
-      //         contact: ${contactRef.current?.value},
-      //         address: ${addressRef.current?.value},
-      //         role: ${role},
-      //       }`);
       const response: any = await fetchData(
         "/auth/register",
         "PUT",
@@ -64,6 +59,7 @@ function Registration(): JSX.Element {
 
       if (response.ok) {
         setIsUserRegistered(true);
+        getAllUsers();
       }
     } catch (error: any) {
       console.error(error.message);
@@ -72,7 +68,7 @@ function Registration(): JSX.Element {
 
   return (
     <>
-      <form>
+      <form style={{ display: "grid", justifyItems: "center" }}>
         <label>Username</label>
         <input id="username" ref={usernameRef} className="fullwidth"></input>
         <label>Password</label>
@@ -103,19 +99,18 @@ function Registration(): JSX.Element {
           ref={addressRef}
           className="fullwidth"
           rows={2}
+          style={{ resize: "none" }}
         ></textarea>
 
-        <label>
-          Role
-          <select
-            className="fullwidth"
-            id="role"
-            onChange={(event) => handleSelect(event)}
-          >
-            <option value="DOCTOR">Doctor</option>
-            <option value="PATIENT">Patient</option>
-          </select>
-        </label>
+        <label>Role</label>
+        <select
+          className="fullwidth"
+          id="role"
+          onChange={(event) => handleSelect(event)}
+        >
+          <option value="DOCTOR">Doctor</option>
+          <option value="PATIENT">Patient</option>
+        </select>
 
         <Button onClick={() => handleRegister()}>Register</Button>
         <Button onClick={() => setIsUserRegistered(true)}>Return</Button>

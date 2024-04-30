@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 // import { Button } from "@mui/material";
@@ -6,7 +6,6 @@ import { Record } from "../classes/record";
 import useFetch from "../hooks/useFetch";
 import { User } from "../classes/user";
 import RecordModal from "./RecordModal";
-import UserContext from "../context/user";
 
 interface RecordCardProps {
   record: Record;
@@ -28,27 +27,9 @@ function RecordCard(props: RecordCardProps): JSX.Element {
     pending_approval: false,
   });
   const fetchData = useFetch();
-  const userCtx = useContext(UserContext);
 
   function handleUserSelect(user: User): void {
     setSelectedUser(user);
-  }
-
-  async function handleDelete() {
-    try {
-      const response: any = await fetchData(
-        "/details/" + record.id,
-        "DELETE",
-        undefined,
-        userCtx.accessToken
-      );
-
-      if (response.ok) {
-        getAllRecords();
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
   }
 
   async function getPatientParticulars() {
@@ -84,25 +65,17 @@ function RecordCard(props: RecordCardProps): JSX.Element {
       )}
       <Card
         onClick={() => setShowModal(true)}
-        style={{ display: "block", margin: "1rem" }}
+        style={{
+          display: "block",
+          margin: "1rem 0 0 0",
+          borderRadius: "20px",
+        }}
       >
-        <CardContent style={{ display: "flex", gap: "2rem" }}>
-          <h1>{selectedUser.full_name}</h1>
-          <p>{record.subjective}</p>
-          <p>{record.objective}</p>
-          <p>{record.assessment}</p>
-          <p>{record.plan}</p>
+        <CardContent style={{ display: "block" }}>
+          <div className="title">{selectedUser.full_name}</div>
+          <div className="description">A: {record.assessment}</div>
+          <div className="description">P: {record.plan}</div>
         </CardContent>
-        <button
-          onClick={handleDelete}
-          style={{
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-            zIndex: "10",
-          }}
-        >
-          &#x2715;
-        </button>
       </Card>
     </>
   );

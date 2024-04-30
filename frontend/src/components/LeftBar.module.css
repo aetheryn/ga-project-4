@@ -17,7 +17,7 @@
 li > a {
   display: grid;
   text-decoration: none;
-  color: #687169;
+  color: #78866b;
   margin: auto;
   margin-bottom: 0.5rem;
   padding: 1rem 0 1rem 0;
@@ -30,7 +30,7 @@ li > a {
 
 li > a:hover {
   border: #78866b solid;
-  color: #687169;
+  color: #78866b;
 }
 
 li > a.active {

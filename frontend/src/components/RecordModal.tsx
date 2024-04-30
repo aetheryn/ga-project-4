@@ -31,6 +31,23 @@ function Overlay(props: ModalProps): JSX.Element {
 
   const userCtx = useContext(UserContext);
 
+  async function handleDelete() {
+    try {
+      const response: any = await fetchData(
+        "/details/" + record.id,
+        "DELETE",
+        undefined,
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        getAllRecords();
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   async function updateDetails() {
     try {
       const response: any = await fetchData(
@@ -84,6 +101,17 @@ function Overlay(props: ModalProps): JSX.Element {
             >
               &#x2190;
             </Button>
+
+            <button
+              onClick={handleDelete}
+              style={{
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+                zIndex: "10",
+              }}
+            >
+              &#x2715;
+            </button>
           </>
         )}
 

@@ -51,14 +51,16 @@ function MainPage(): JSX.Element {
       )}
 
       {!showForm && (
-        <>
-          <Button
+        <div style={{ display: "grid" }}>
+          <button
+            className="button"
             onClick={() => {
               setShowForm(true);
             }}
+            style={{ justifySelf: "flex-end" }}
           >
-            Create New Entry
-          </Button>
+            + New Record
+          </button>
           {allRecords.map((record) => {
             return (
               <div className="cols-sm">
@@ -69,7 +71,7 @@ function MainPage(): JSX.Element {
               </div>
             );
           })}
-        </>
+        </div>
       )}
     </div>
   );

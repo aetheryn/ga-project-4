@@ -30,6 +30,15 @@ function LeftBar(): JSX.Element {
             Register
           </NavLink>
         </li>
+
+        <li>
+          <NavLink
+            className={(navData) => (navData.isActive ? styles.active : "")}
+            to="/users"
+          >
+            Users
+          </NavLink>
+        </li>
       </div>
     </div>
   );

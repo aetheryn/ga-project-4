@@ -12,7 +12,7 @@ interface FormProps {
 
 function RecordForm(props: FormProps): JSX.Element {
   const { getAllRecords, setShowForm } = props;
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [allPatients, setAllPatients] = useState<User[]>([]);
   const [userId, setUserId] = useState<User["id"]>(0);
   const fetchData = useFetch();
   const userCtx = useContext(UserContext);
@@ -29,27 +29,12 @@ function RecordForm(props: FormProps): JSX.Element {
   );
   const planRef = useRef<HTMLInputElement>(document.querySelector("#plan"));
 
-  async function getAllUsers() {
-    try {
-      const response: any = await fetchData(
-        "/users",
-        "GET",
-        undefined,
-        undefined
-      );
-
-      if (response.ok) {
-        const tempArray: User[] = [...response.data];
-        const listOfPatients: User[] = tempArray.filter(
-          (user) => user.role === "PATIENT"
-        );
-        setAllUsers(listOfPatients);
-      }
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        console.error(error.message);
-      }
-    }
+  function getPatients() {
+    const tempArray: User[] = [...userCtx.allUsers];
+    const listOfPatients: User[] = tempArray.filter(
+      (user) => user.role === "PATIENT"
+    );
+    setAllPatients(listOfPatients);
   }
 
   async function getUserId() {
@@ -97,7 +82,7 @@ function RecordForm(props: FormProps): JSX.Element {
   }
 
   useEffect(() => {
-    getAllUsers();
+    getPatients();
   }, []);
 
   return (
@@ -105,7 +90,7 @@ function RecordForm(props: FormProps): JSX.Element {
       <Autocomplete
         freeSolo
         id="patient-name"
-        options={allUsers.map((user) => user.full_name)}
+        options={allPatients.map((user) => user.full_name)}
         renderInput={(params) => (
           <TextField {...params} label="Patient Name" inputRef={nameRef} />
         )}

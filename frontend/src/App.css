@@ -11,7 +11,7 @@
 }
 
 .fullwidth {
-  width: 100%;
+  width: 80%;
 }
 
 input {
@@ -26,4 +26,36 @@ textarea {
   padding: 0.5rem;
   border: solid #687169;
   border-radius: 10px;
+}
+
+select {
+  background-color: transparent;
+  padding: 0.5rem;
+  border: solid #687169;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: large;
+  font-weight: 700;
+  text-align: left;
+}
+
+.description {
+  text-align: left;
+}
+
+.button {
+  padding: 0.5rem;
+  background-color: transparent;
+  border: #78866b solid;
+  cursor: pointer;
+  border-radius: 10px;
+  color: #78866b;
+  font-size: 1em;
+}
+
+.button:hover {
+  background-color: #78866b;
+  color: #f4f3ef;
 }
