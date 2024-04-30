@@ -1,0 +1,66 @@
+.navbar {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 18%;
+  background-color: white;
+  height: 100%;
+  position: fixed;
+  overflow: auto;
+  left: 0;
+  top: 0;
+}
+
+li > a {
+  display: grid;
+  text-decoration: none;
+  color: #687169;
+  margin: auto;
+  margin-bottom: 0.5rem;
+  padding: 1rem 0 1rem 0;
+  font-size: large;
+  width: 80%;
+  text-align: left;
+  text-indent: 1rem;
+  border-radius: 20px;
+}
+
+li > a:hover {
+  border: #78866b solid;
+  color: #687169;
+}
+
+li > a.active {
+  border: 0.1rem #d0d9cd solid;
+  background-color: #d0d9cd;
+  color: #687169;
+}
+
+.navicon {
+  margin-top: -1.7rem;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  height: 200px;
+}
+
+.logout {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 25rem 0 0 0;
+  /* bottom: 5rem; */
+}
+
+.logout > button {
+  color: #4e95d9;
+  font-size: 100%;
+  background-color: transparent;
+  border-color: transparent;
+  /* width: 150px;
+  height: 200%; */
+}
