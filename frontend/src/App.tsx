@@ -57,10 +57,7 @@ function App() {
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="login" element={<LoginPage></LoginPage>} />
           <Route path="main" element={<MainPage></MainPage>} />
-          <Route
-            path="register"
-            element={<Registration getAllUsers={getAllUsers}></Registration>}
-          />
+          <Route path="register" element={<Registration></Registration>} />
           <Route path="users" element={<UserMgt></UserMgt>} />
         </Routes>
       </div>

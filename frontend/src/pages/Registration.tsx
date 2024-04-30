@@ -1,18 +1,15 @@
-import { SyntheticEvent, useContext, useRef, useState } from "react";
-import { Button } from "@mui/material";
+import { SyntheticEvent, useContext, useEffect, useRef, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-interface RegistrationProps {
-  getAllUsers: () => void;
-}
-
-function Registration({ getAllUsers }: RegistrationProps): JSX.Element {
+function Registration(): JSX.Element {
   const fetchData = useFetch();
   const [role, setRole] = useState<string>("");
+  const [currentDate, setCurrentDate] = useState<string>("");
   const [isUserRegistered, setIsUserRegistered] = useState<boolean>(false);
   const userCtx = useContext(UserContext);
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(
     document.querySelector("#username")
@@ -38,8 +35,14 @@ function Registration({ getAllUsers }: RegistrationProps): JSX.Element {
     setRole(selectElement.value);
   }
 
-  async function handleRegister() {
+  function getCurrentDate(): void {
+    let today = new Date().toISOString().slice(0, 10);
+    setCurrentDate(today);
+  }
+
+  async function handleRegister(event: SyntheticEvent) {
     try {
+      event.preventDefault();
       const response: any = await fetchData(
         "/auth/register",
         "PUT",
@@ -55,69 +58,115 @@ function Registration({ getAllUsers }: RegistrationProps): JSX.Element {
         userCtx.accessToken
       );
 
-      console.log(response);
-
       if (response.ok) {
         setIsUserRegistered(true);
-        getAllUsers();
       }
     } catch (error: any) {
       console.error(error.message);
     }
   }
 
+  function backToLogin(event: SyntheticEvent): void {
+    event.preventDefault();
+    navigate("/login");
+  }
+
+  useEffect(() => {
+    getCurrentDate();
+  }, []);
+
   return (
-    <>
-      <form style={{ display: "grid", justifyItems: "center" }}>
-        <label>Username</label>
-        <input id="username" ref={usernameRef} className="fullwidth"></input>
-        <label>Password</label>
-        <input
-          id="password"
-          ref={passwordRef}
-          className="fullwidth"
-          type="password"
-        ></input>
+    <div className="centered">
+      <h1>MedTrack</h1>
+      {!isUserRegistered && (
+        <form className="auth">
+          <label>Username</label>
+          <input
+            id="username"
+            ref={usernameRef}
+            className="auth-input"
+            required
+            placeholder="Your username (no spaces allowed)"
+          ></input>
 
-        <label>Full Name</label>
-        <input id="full-name" ref={fullNameRef} className="fullwidth"></input>
+          <label>Password</label>
+          <input
+            id="password"
+            required
+            ref={passwordRef}
+            className="auth-input"
+            type="password"
+            placeholder="Your password"
+          ></input>
 
-        <label>Date of Birth</label>
-        <input
-          id="date-of-birth"
-          ref={dateOfBirthRef}
-          className="fullwidth"
-          type="date"
-        ></input>
+          <label>Full Name</label>
+          <input
+            id="full-name"
+            required
+            ref={fullNameRef}
+            className="auth-input"
+            placeholder="Your full name"
+          ></input>
 
-        <label>Contact</label>
-        <input id="contact" ref={contactRef} className="fullwidth"></input>
+          <label>Date of Birth</label>
+          <input
+            id="date-of-birth"
+            ref={dateOfBirthRef}
+            className="auth-input"
+            type="date"
+            max={currentDate}
+          ></input>
 
-        <label>Address</label>
-        <textarea
-          id="address"
-          ref={addressRef}
-          className="fullwidth"
-          rows={2}
-          style={{ resize: "none" }}
-        ></textarea>
+          <label>Contact</label>
+          <input
+            id="contact"
+            ref={contactRef}
+            className="auth-input"
+            type="number"
+            placeholder="Your contact number (8 digits)"
+          ></input>
 
-        <label>Role</label>
-        <select
-          className="fullwidth"
-          id="role"
-          onChange={(event) => handleSelect(event)}
-        >
-          <option value="DOCTOR">Doctor</option>
-          <option value="PATIENT">Patient</option>
-        </select>
+          <label>Address</label>
+          <textarea
+            id="address"
+            ref={addressRef}
+            className="auth-input"
+            rows={2}
+            style={{ resize: "none" }}
+            placeholder="Your address"
+          ></textarea>
 
-        <Button onClick={() => handleRegister()}>Register</Button>
-        <Button onClick={() => setIsUserRegistered(true)}>Return</Button>
-      </form>
+          <label>Role</label>
+          <select
+            className="auth-input"
+            id="role"
+            onChange={(event) => handleSelect(event)}
+          >
+            <option disabled selected>
+              Select Role
+            </option>
+            <option value="DOCTOR">Doctor</option>
+            <option value="PATIENT">Patient</option>
+          </select>
 
-      {isUserRegistered && <Navigate to="/main" />}
-    </>
+          <button
+            className="button auth-button"
+            onClick={(event) => handleRegister(event)}
+          >
+            Register
+          </button>
+        </form>
+      )}
+
+      {isUserRegistered && <div>User registered.</div>}
+
+      <button
+        className="button auth-button"
+        onClick={(event) => backToLogin(event)}
+      >
+        &#x2190; Back to Login
+      </button>
+    </div>
   );
 }
 

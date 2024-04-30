@@ -13,23 +13,6 @@ function LeftBar(): JSX.Element {
             Dashboard
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            className={(navData) => (navData.isActive ? styles.active : "")}
-            to="/login"
-          >
-            Login
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            className={(navData) => (navData.isActive ? styles.active : "")}
-            to="/register"
-          >
-            Register
-          </NavLink>
-        </li>
 
         <li>
           <NavLink

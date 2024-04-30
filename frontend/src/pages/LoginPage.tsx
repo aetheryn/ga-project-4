@@ -46,18 +46,20 @@ function LoginPage(): JSX.Element {
       <form onSubmit={handleLogin} className="auth">
         <label>Username</label>
         <input
-          className="login-input"
-          placeholder="Enter username"
+          required
+          className="auth-input"
+          placeholder="Enter your username"
           onChange={(event) => setUsername(event.target.value)}
         ></input>
         <label>Password</label>
         <input
-          className="login-input"
-          placeholder="Enter password"
+          required
+          className="auth-input"
+          placeholder="Enter your password"
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         ></input>
-        <button className="button login-button" type="submit">
+        <button className="button auth-button" type="submit">
           Login
         </button>
       </form>
