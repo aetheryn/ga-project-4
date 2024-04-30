@@ -9,3 +9,21 @@
   margin-left: 18%;
   margin-right: 25%;
 }
+
+.fullwidth {
+  width: 100%;
+}
+
+input {
+  background-color: transparent;
+  padding: 0.5rem;
+  border: solid #687169;
+  border-radius: 10px;
+}
+
+textarea {
+  background-color: transparent;
+  padding: 0.5rem;
+  border: solid #687169;
+  border-radius: 10px;
+}

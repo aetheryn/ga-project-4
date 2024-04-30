@@ -1,57 +1,116 @@
-import {
-  FormControl,
-  TextField,
-  InputLabel,
-  Select,
-  MenuItem,
-  Button,
-} from "@mui/material";
+import { SyntheticEvent, useContext, useRef, useState } from "react";
+import { Button } from "@mui/material";
+import useFetch from "../hooks/useFetch";
+import UserContext from "../context/user";
 import { Navigate } from "react-router-dom";
 
 function Registration(): JSX.Element {
+  const fetchData = useFetch();
+  const [role, setRole] = useState<string>("");
+  const [isUserRegistered, setIsUserRegistered] = useState<boolean>(false);
+  const userCtx = useContext(UserContext);
+
+  const usernameRef = useRef<HTMLInputElement>(
+    document.querySelector("#username")
+  );
+  const passwordRef = useRef<HTMLInputElement>(
+    document.querySelector("#password")
+  );
+  const fullNameRef = useRef<HTMLInputElement>(
+    document.querySelector("#full-name")
+  );
+  const dateOfBirthRef = useRef<HTMLInputElement>(
+    document.querySelector("#date-of-birth")
+  );
+  const contactRef = useRef<HTMLInputElement>(
+    document.querySelector("#contact")
+  );
+  const addressRef = useRef<HTMLInputElement>(
+    document.querySelector("#address")
+  );
+
+  function handleSelect(event: SyntheticEvent) {
+    const selectElement = event.currentTarget as HTMLInputElement;
+    setRole(selectElement.value);
+  }
+
+  async function handleRegister() {
+    try {
+      const response: any = await fetchData(
+        "/auth/register",
+        "POST",
+        {
+          username: usernameRef.current?.value,
+          password: passwordRef.current?.value,
+          fullName: fullNameRef.current?.value,
+          dateOfBirth: dateOfBirthRef.current?.value,
+          contact: contactRef.current?.value,
+          address: addressRef.current?.value,
+          role: role,
+        },
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        setIsUserRegistered(true);
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <>
-      <TextField fullWidth id="username" label="Username" variant="standard" />
+      <form>
+        <label>Username</label>
+        <input id="username" ref={usernameRef} className="fullwidth"></input>
+        <label>Password</label>
+        <input
+          id="password"
+          ref={passwordRef}
+          className="fullwidth"
+          type="password"
+        ></input>
 
-      <TextField
-        fullWidth
-        id="password"
-        label="Password"
-        type="password"
-        variant="standard"
-      />
+        <label>Full Name</label>
+        <input id="full-name" ref={fullNameRef} className="fullwidth"></input>
 
-      <TextField
-        fullWidth
-        id="full-name"
-        label="Full Name"
-        variant="standard"
-      />
+        <label>Date of Birth</label>
+        <input
+          id="date-of-birth"
+          ref={dateOfBirthRef}
+          className="fullwidth"
+          type="date"
+        ></input>
 
-      <TextField
-        fullWidth
-        id="date-of-birth"
-        label="Date of Birth"
-        variant="standard"
-      />
+        <label>Contact</label>
+        <input id="contact" ref={contactRef} className="fullwidth"></input>
 
-      <TextField fullWidth id="contact" label="Contact" variant="standard" />
+        <label>Address</label>
+        <textarea
+          id="address"
+          value={addressRef.current?.value}
+          className="fullwidth"
+          rows={2}
+        ></textarea>
 
-      <TextField
-        fullWidth
-        multiline
-        maxRows={2}
-        id="address"
-        label="Address"
-        variant="standard"
-      />
+        <label>
+          Role
+          <select
+            className="fullwidth"
+            id="role"
+            onChange={(event) => handleSelect(event)}
+          >
+            <option value="DOCTOR">Doctor</option>
+            <option value="PATIENT">Patient</option>
+          </select>
+        </label>
 
-      <Select fullWidth label="Role">
-        <MenuItem value={"DOCTOR"}>Doctor</MenuItem>
-        <MenuItem value={"PATIENT"}>Patient</MenuItem>
-      </Select>
+        <Button onClick={handleRegister}>Register</Button>
+        <Button onClick={() => setIsUserRegistered(true)}>Return</Button>
+      </form>
 
-      <Button>Return</Button>
+      {isUserRegistered && <Navigate to="/main" />}
     </>
   );
 }

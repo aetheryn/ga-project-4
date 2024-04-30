@@ -87,7 +87,10 @@ function RecordCard(props: RecordCardProps): JSX.Element {
           getAllRecords={getAllRecords}
         ></RecordModal>
       )}
-      <Card onClick={() => setShowModal(true)}>
+      <Card
+        onClick={() => setShowModal(true)}
+        style={{ display: "block", margin: "1rem" }}
+      >
         <CardContent style={{ display: "flex", gap: "2rem" }}>
           <h1>{selectedUser.full_name}</h1>
           <p>{record.subjective}</p>
