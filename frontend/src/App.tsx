@@ -2,6 +2,7 @@ import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import PatientDashboard from "./pages/PatientDashboard";
 import { useEffect, useState } from "react";
 import UserContext from "./context/user";
 import Registration from "./pages/Registration";
@@ -59,7 +60,7 @@ function App() {
         </Routes>
       )}
 
-      {loggedInUser && (
+      {loggedInUser?.role === "DOCTOR" && (
         <>
           <LeftBar></LeftBar>
           <div className="main">
@@ -69,10 +70,25 @@ function App() {
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
+          <RightBar></RightBar>
         </>
       )}
 
-      {loggedInUser?.role === "DOCTOR" ? <RightBar></RightBar> : null}
+      {loggedInUser?.role === "PATIENT" && (
+        <>
+          <LeftBar></LeftBar>
+          <div className="main">
+            <Routes>
+              <Route
+                path="main"
+                element={<PatientDashboard></PatientDashboard>}
+              />
+              <Route path="*" element={<Navigate replace to="/main" />} />
+            </Routes>
+          </div>
+          <RightBar></RightBar>
+        </>
+      )}
     </UserContext.Provider>
   );
 }
