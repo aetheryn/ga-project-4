@@ -9,6 +9,7 @@ const auth = require("./src/routers/auth.js");
 const users = require("./src/routers/users.js");
 const details = require("./src/routers/details.js");
 const appointments = require("./src/routers/appointments.js");
+const unavailabilities = require("./src/routers/unavailabilities.js");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -29,6 +30,7 @@ app.use("/auth", auth);
 app.use("/users", users);
 app.use("/details", details);
 app.use("/appointments", appointments);
+app.use("/unavailabilities", unavailabilities);
 
 const PORT = process.env.PORT || 5001;
 
