@@ -11,6 +11,8 @@ import LeftBar from "./components/LeftBar";
 import RightBar from "./components/RightBar";
 import UserMgt from "./pages/UserMgt";
 import useFetch from "./hooks/useFetch";
+import Appointments from "./pages/Appointments";
+import Booking from "./pages/Booking";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<User>();
@@ -67,6 +69,10 @@ function App() {
             <Routes>
               <Route path="main" element={<MainPage></MainPage>} />
               <Route path="users" element={<UserMgt></UserMgt>} />
+              <Route
+                path="appointments"
+                element={<Appointments></Appointments>}
+              />
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
@@ -83,6 +89,7 @@ function App() {
                 path="main"
                 element={<PatientDashboard></PatientDashboard>}
               />
+              <Route path="booking" element={<Booking></Booking>} />
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>

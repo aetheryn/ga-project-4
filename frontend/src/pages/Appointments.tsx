@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import useFetch from "../hooks/useFetch";
+import { Appointment } from "../classes/appointment";
+import UserContext from "../context/user";
+import AppointmentCard from "../components/AppointmentCard";
 
 function Appointments(): JSX.Element {
-  const appointments = [
-    { id: 1, date: "2024-05-15", time: "10:00", withWho: "Patient A" },
-    { id: 2, date: "2024-05-16", time: "11:00", withWho: "Patient B" },
-  ];
-
+  const fetchData = useFetch();
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const userCtx = useContext(UserContext);
   // State to manage availability
   const [availability, setAvailability] = useState(new Array(24).fill(true));
 
@@ -16,14 +18,36 @@ function Appointments(): JSX.Element {
     setAvailability(newAvailability);
   };
 
+  async function getDoctorAppointments() {
+    try {
+      const response: any = await fetchData(
+        "/appointments/doctor/pending/" + userCtx.loggedInUser.id,
+        "POST",
+        undefined,
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        setAppointments(response.data);
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getDoctorAppointments();
+  }, []);
+
   return (
     <div>
       <h1>Upcoming Appointments</h1>
       <ul>
         {appointments.map((appointment) => (
-          <li key={appointment.id}>
-            {appointment.date} at {appointment.time} with {appointment.withWho}
-          </li>
+          <AppointmentCard
+            key={appointment.id}
+            appointment={appointment}
+          ></AppointmentCard>
         ))}
       </ul>
       <h2>Availability</h2>
