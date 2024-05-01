@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { Appointment } from "../classes/appointment";
 import UserContext from "../context/user";
-import AppointmentCard from "../components/AppointmentCard";
+import DocAppointmentCard from "../components/DocAppointmentCard";
 
 function Appointments(): JSX.Element {
   const fetchData = useFetch();
@@ -42,14 +42,13 @@ function Appointments(): JSX.Element {
   return (
     <div>
       <h1>Upcoming Appointments</h1>
-      <ul>
-        {appointments.map((appointment) => (
-          <AppointmentCard
-            key={appointment.id}
-            appointment={appointment}
-          ></AppointmentCard>
-        ))}
-      </ul>
+      {appointments.map((appointment) => (
+        <DocAppointmentCard
+          key={appointment.id}
+          appointment={appointment}
+        ></DocAppointmentCard>
+      ))}
+
       <h2>Availability</h2>
       <div>
         {availability.map((isAvailable, index) => (

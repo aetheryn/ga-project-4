@@ -7,7 +7,7 @@ interface AppointmentProps {
   appointment: Appointment;
 }
 
-function AppointmentCard({ appointment }: AppointmentProps): JSX.Element {
+function DocAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -50,4 +50,4 @@ function AppointmentCard({ appointment }: AppointmentProps): JSX.Element {
   );
 }
 
-export default AppointmentCard;
+export default DocAppointmentCard;
