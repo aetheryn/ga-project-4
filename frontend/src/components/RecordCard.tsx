@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Record } from "../classes/record";
@@ -15,7 +15,7 @@ interface RecordCardProps {
 
 function RecordCard(props: RecordCardProps): JSX.Element {
   const { record, allRecords, getAllRecords } = props;
-  const [showRecordModal, setShowRecordModal] = useState<boolean>(false);
+  const [showRecord, setShowRecord] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User>({
     id: 0,
@@ -32,6 +32,21 @@ function RecordCard(props: RecordCardProps): JSX.Element {
 
   function handleUserSelect(user: User): void {
     setSelectedUser(user);
+  }
+
+  function handleClick(event: SyntheticEvent) {
+    const elements = document.getElementsByClassName("card-content");
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList.remove("isActive");
+      setShowRecord(false);
+    }
+
+    const selectElement = event.currentTarget as HTMLDivElement;
+    selectElement.classList.add("isActive");
+
+    if (selectElement.classList.contains("isActive")) {
+      setShowRecord(true);
+    } else setShowRecord(false);
   }
 
   async function getPatientParticulars() {
@@ -57,11 +72,11 @@ function RecordCard(props: RecordCardProps): JSX.Element {
 
   return (
     <>
-      {showRecordModal && (
+      {showRecord && (
         <RecordModal
           record={record}
           selectedUser={selectedUser}
-          setShowRecordModal={setShowRecordModal}
+          setShowRecord={setShowRecord}
           getAllRecords={getAllRecords}
         ></RecordModal>
       )}
@@ -82,8 +97,9 @@ function RecordCard(props: RecordCardProps): JSX.Element {
         }}
       >
         <CardContent
+          className="card-content"
           style={{ display: "block" }}
-          onClick={() => setShowRecordModal(true)}
+          onClick={(event) => handleClick(event)}
         >
           <div className="title">{selectedUser.full_name}</div>
           <div className="description">A: {record.assessment}</div>

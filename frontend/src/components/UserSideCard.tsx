@@ -1,11 +1,41 @@
 import { Card } from "@mui/material";
+import { Record } from "../classes/record";
 import { User } from "../classes/user";
+import useFetch from "../hooks/useFetch";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../context/user";
 
 interface UserSideCardProps {
-  selectedUser: User | undefined;
+  selectedUser: User;
 }
 
 function UserSideCard({ selectedUser }: UserSideCardProps): JSX.Element {
+  const [patientRecords, setPatientRecords] = useState<Record[]>([]);
+  const [showRecord, setShowRecord] = useState<boolean>(false);
+  const fetchData = useFetch();
+  const userCtx = useContext(UserContext);
+
+  async function getRecords() {
+    try {
+      const response: any = await fetchData(
+        "/details/patient/" + selectedUser?.id,
+        "POST",
+        undefined,
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        setPatientRecords(response.data);
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getRecords();
+  }, [selectedUser]);
+
   return (
     <div className="side">
       <Card
@@ -17,7 +47,8 @@ function UserSideCard({ selectedUser }: UserSideCardProps): JSX.Element {
           borderRadius: "20px",
           width: "80%",
           maxHeight: "50vh",
-          backgroundColor: "#f4f3ef",
+          backgroundColor: "#d0d9cd",
+          color: "#383838",
         }}
       >
         <h1>{selectedUser?.full_name}</h1>
@@ -34,6 +65,22 @@ function UserSideCard({ selectedUser }: UserSideCardProps): JSX.Element {
           <br />
           <div className="user-heading">Address</div>
           <div>{selectedUser?.address}</div>
+
+          {patientRecords.length > 0 && (
+            <>
+              <br />
+              <div className="user-heading">Consultation Dates</div>
+              {patientRecords.map((record) => {
+                return (
+                  <>
+                    <a onClick={() => setShowRecord(true)}>
+                      {record?.created_at.toString().slice(0, 10)}
+                    </a>
+                  </>
+                );
+              })}
+            </>
+          )}
         </div>
       </Card>
     </div>

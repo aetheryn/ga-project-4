@@ -1,33 +1,58 @@
-import { SyntheticEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../context/user";
 import { User } from "../classes/user";
-import { Card } from "@mui/material";
 import UserSideCard from "../components/UserSideCard";
 
 function UserMgt(): JSX.Element {
-  const [selectedUser, setSelectedUser] = useState<User>();
+  const [selectedUser, setSelectedUser] = useState<User>({
+    id: 0,
+    username: "",
+    hash: "",
+    full_name: "",
+    date_of_birth: new Date(),
+    contact: 0,
+    address: "",
+    role: "",
+    pending_approval: false,
+  });
   const [showUserDetails, setShowUserDetails] = useState<boolean>(false);
   const userCtx = useContext(UserContext);
 
   function handleUserSelect(user: User) {
-    console.log(user.full_name);
     setSelectedUser(user);
     setShowUserDetails(true);
+  }
+
+  function formatDisplayedRole(string: string): string | undefined {
+    if (string === "DOCTOR") {
+      return "Doctor";
+    } else if (string === "PATIENT") {
+      return "Patient";
+    }
   }
 
   return (
     <>
       <div className="container">
-        {userCtx.allUsers.map((user: User) => {
-          return (
-            <div
-              style={{ display: "block", margin: "1rem", borderRadius: "20px" }}
-              onClick={() => handleUserSelect(user)}
-            >
-              <h1> {user.username}</h1>
-            </div>
-          );
-        })}
+        <h1>List of Users</h1>
+        <table className="user-table">
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+          </tr>
+
+          {userCtx.allUsers.map((user: User) => {
+            return (
+              <tr
+                className="user-table-row"
+                onClick={() => handleUserSelect(user)}
+              >
+                <td> {user.full_name}</td>
+                <td> {formatDisplayedRole(user.role)}</td>
+              </tr>
+            );
+          })}
+        </table>
       </div>
       {showUserDetails && (
         <div>

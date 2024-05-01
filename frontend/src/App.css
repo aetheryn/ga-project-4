@@ -156,3 +156,17 @@ select:focus {
   font-size: 0.8rem;
   font-weight: 700;
 }
+
+.user-table {
+  width: 100%;
+  text-align: start;
+}
+
+.user-table > tr > th {
+  text-align: start;
+}
+
+.user-table-row:hover {
+  cursor: pointer;
+  background-color: #d0d9cd;
+}
