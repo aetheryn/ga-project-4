@@ -190,8 +190,8 @@ const getDetailsByPatient = async (req, res) => {
       [req.params.id]
     );
 
-    if (req.decoded.role !== "DOCTOR" || req.decoded.id === req.params.id) {
-      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    if (req.decoded.role !== "DOCTOR" && req.decoded.id != req.params.id) {
+      return res.status(401).json({ status: "error", msg: "Testing." });
     }
 
     await client.query("COMMIT");
