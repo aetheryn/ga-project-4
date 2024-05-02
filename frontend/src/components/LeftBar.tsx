@@ -47,14 +47,25 @@ function LeftBar(): JSX.Element {
         )}
 
         {userCtx.loggedInUser.role === "PATIENT" && (
-          <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? styles.active : "")}
-              to="/booking"
-            >
-              Book an Appointment
-            </NavLink>
-          </li>
+          <>
+            <li>
+              <NavLink
+                className={(navData) => (navData.isActive ? styles.active : "")}
+                to="/booking"
+              >
+                Book Now
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                className={(navData) => (navData.isActive ? styles.active : "")}
+                to="/appointments"
+              >
+                Appointments
+              </NavLink>
+            </li>
+          </>
         )}
 
         <li>
