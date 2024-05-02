@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import UserContext from "../context/user";
 import { Record } from "../classes/record";
-import styles from "./Modal.module.css";
+import styles from "./DeleteModal.module.css";
 import useFetch from "../hooks/useFetch";
 import ReactDOM from "react-dom";
 
@@ -37,13 +37,22 @@ function Overlay(props: ModalProps): JSX.Element {
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
-        <p>Confirm delete?</p>
-        <button onClick={handleDelete}>Yes</button>
-        <button
-          onClick={() => {
-            setShowAlert(false);
-          }}
-        ></button>
+        <div className={styles.container}>
+          <p>Confirm to delete this record?</p>
+          <div className={styles.buttonwrapper}>
+            <button onClick={handleDelete} className={styles.button}>
+              Yes
+            </button>
+            <button
+              onClick={() => {
+                setShowAlert(false);
+              }}
+              className={styles.button}
+            >
+              No
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
