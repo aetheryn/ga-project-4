@@ -118,9 +118,11 @@ function Booking(): JSX.Element {
 
       <br />
 
-      <button className="button" onClick={handleClick}>
-        Book Appointment
-      </button>
+      {selectedDoctor !== 0 && selectedDate && selectedTime && (
+        <button className="button" onClick={handleClick}>
+          Book Appointment
+        </button>
+      )}
     </div>
   );
 }
