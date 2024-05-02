@@ -96,7 +96,9 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
           <td>{formatDisplayedStatus(appointment.status)}</td>
           {appointment.status === "PENDING" && (
             <td>
-              <button onClick={handleClick}>Update Status</button>
+              <button onClick={handleClick} className="button">
+                Update Status
+              </button>
             </td>
           )}
         </>
@@ -111,8 +113,14 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
             </select>
           </td>
           <td>
-            <button onClick={() => updateStatus()}>Save</button>
-            <button onClick={() => setIsUpdating(false)}>Cancel</button>
+            <div className="button-wrapper">
+              <button onClick={() => updateStatus()} className="button">
+                Save
+              </button>
+              <button onClick={() => setIsUpdating(false)} className="button">
+                Cancel
+              </button>
+            </div>
           </td>
         </>
       )}

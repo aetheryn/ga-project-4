@@ -166,7 +166,7 @@ select:focus {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 100;
+  z-index: 1;
   width: 25%;
   margin-top: 5rem;
 }
@@ -260,4 +260,16 @@ select:focus {
 .suggestions-list li:hover {
   background-color: #687169;
   color: white;
+}
+
+.consultdates:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
