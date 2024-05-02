@@ -45,7 +45,7 @@ function Autocomplete(props: AutocompleteProps): JSX.Element {
     }
   }
 
-  function handleSuggestionClick(value: User) {
+  function handleSuggestionClick(value: User): void {
     setInputValue(value["full_name"]);
     getUserId(value["full_name"]);
     setSuggestions([]);

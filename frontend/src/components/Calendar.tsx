@@ -6,10 +6,10 @@ interface CalendarProps {
 }
 
 function Calendar({ setSelectedDate }: CalendarProps) {
-  const today = new Date();
-  const month = today.getMonth();
-  const year = today.getFullYear();
-  const numOfDays = new Date(year, month + 1, 0).getDate();
+  const today: Date = new Date();
+  const month: number = today.getMonth();
+  const year: number = today.getFullYear();
+  const numOfDays: number = new Date(year, month + 1, 0).getDate();
 
   const weekDays: Array<string> = [
     "Sun",
@@ -21,8 +21,8 @@ function Calendar({ setSelectedDate }: CalendarProps) {
     "Sat",
   ];
 
-  const firstDayOfMonth = new Date(year, month, 1);
-  const dayOfWeekFirstDay = firstDayOfMonth.getDay();
+  const firstDayOfMonth: Date = new Date(year, month, 1);
+  const dayOfWeekFirstDay: number = firstDayOfMonth.getDay();
 
   function handleDayClick(event: SyntheticEvent, day: number): void {
     const date = new Date(year, month, day, 8, 0).toISOString().slice(0, 10);
