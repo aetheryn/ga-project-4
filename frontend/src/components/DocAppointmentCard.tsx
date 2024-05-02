@@ -6,11 +6,11 @@ import UserContext from "../context/user";
 
 interface AppointmentProps {
   appointment: Appointment;
-  getDoctorAppointments: () => void;
+  getPendingDocAppointments: () => void;
 }
 
 function DocAppointmentCard(props: AppointmentProps): JSX.Element {
-  const { appointment, getDoctorAppointments } = props;
+  const { appointment, getPendingDocAppointments } = props;
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -62,7 +62,7 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
       );
 
       if (response.ok) {
-        getDoctorAppointments();
+        getPendingDocAppointments();
         setIsUpdating(false);
       }
     } catch (error: any) {
@@ -75,10 +75,12 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
     setStatus(selectElement.value);
   }
 
-  function formatDisplayedStatus(string: string): string | undefined {
+  function formatDisplayedStatus(string: string): string {
     if (string === "PENDING") {
       return "Pending";
-    }
+    } else if (string === "COMPLETED") {
+      return "Completed";
+    } else return "Missed";
   }
 
   return (
@@ -89,9 +91,11 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
       {!isUpdating && (
         <>
           <td>{formatDisplayedStatus(appointment.status)}</td>
-          <td>
-            <button onClick={handleClick}>Update Status</button>
-          </td>
+          {appointment.status === "PENDING" && (
+            <td>
+              <button onClick={handleClick}>Update Status</button>
+            </td>
+          )}
         </>
       )}
       {isUpdating && (

@@ -11,7 +11,8 @@ import LeftBar from "./components/LeftBar";
 import RightBar from "./components/RightBar";
 import UserMgt from "./pages/UserMgt";
 import useFetch from "./hooks/useFetch";
-import Appointments from "./pages/Appointments";
+import DocAppointments from "./pages/DocAppointments";
+import PatAppointments from "./pages/PatAppointments";
 import Booking from "./pages/Booking";
 import Profile from "./pages/Profile";
 
@@ -73,7 +74,7 @@ function App() {
               <Route path="users" element={<UserMgt></UserMgt>} />
               <Route
                 path="appointments"
-                element={<Appointments></Appointments>}
+                element={<DocAppointments></DocAppointments>}
               />
               <Route path="profile" element={<Profile></Profile>} />
 
@@ -94,6 +95,10 @@ function App() {
                 element={<PatientDashboard></PatientDashboard>}
               />
               <Route path="booking" element={<Booking></Booking>} />
+              <Route
+                path="appointments"
+                element={<PatAppointments></PatAppointments>}
+              />
               <Route path="profile" element={<Profile></Profile>} />
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
