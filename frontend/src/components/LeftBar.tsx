@@ -6,6 +6,11 @@ import { useContext } from "react";
 function LeftBar(): JSX.Element {
   const userCtx = useContext(UserContext);
 
+  function handleLogout(): void {
+    userCtx.setLoggedInUser();
+    userCtx.setAccessToken("");
+  }
+
   return (
     <div className={styles.navbar}>
       <div className={styles.navlinks}>
@@ -52,6 +57,9 @@ function LeftBar(): JSX.Element {
           </li>
         )}
       </div>
+      <a className={styles.logout} onClick={handleLogout}>
+        Logout
+      </a>
     </div>
   );
 }

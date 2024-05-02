@@ -1,5 +1,5 @@
 .navbar {
-  display: block;
+  display: grid;
   list-style-type: none;
   width: 15%;
   background-color: white;
@@ -38,4 +38,14 @@ li > a.active {
   border: 0.1rem #d0d9cd solid;
   background-color: #d0d9cd;
   color: #687169;
+}
+
+.logout {
+  align-self: flex-end;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.logout:hover {
+  font-weight: 700;
 }
