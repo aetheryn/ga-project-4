@@ -56,7 +56,17 @@ function LeftBar(): JSX.Element {
             </NavLink>
           </li>
         )}
+
+        <li>
+          <NavLink
+            className={(navData) => (navData.isActive ? styles.active : "")}
+            to="/profile"
+          >
+            Profile
+          </NavLink>
+        </li>
       </div>
+
       <a className={styles.logout} onClick={handleLogout}>
         Logout
       </a>

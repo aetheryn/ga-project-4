@@ -13,6 +13,7 @@ import UserMgt from "./pages/UserMgt";
 import useFetch from "./hooks/useFetch";
 import Appointments from "./pages/Appointments";
 import Booking from "./pages/Booking";
+import Profile from "./pages/Profile";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState<User>();
@@ -41,6 +42,7 @@ function App() {
 
   useEffect(() => {
     getAllUsers();
+    console.log(loggedInUser);
   }, []);
 
   return (
@@ -73,10 +75,12 @@ function App() {
                 path="appointments"
                 element={<Appointments></Appointments>}
               />
+              <Route path="profile" element={<Profile></Profile>} />
+
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
-          <RightBar></RightBar>
+          {/* <RightBar></RightBar> */}
         </>
       )}
 
@@ -90,10 +94,11 @@ function App() {
                 element={<PatientDashboard></PatientDashboard>}
               />
               <Route path="booking" element={<Booking></Booking>} />
+              <Route path="profile" element={<Profile></Profile>} />
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
-          <RightBar></RightBar>
+          {/* <RightBar></RightBar> */}
         </>
       )}
     </UserContext.Provider>
