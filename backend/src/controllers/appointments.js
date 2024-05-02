@@ -198,8 +198,8 @@ const getAppointmentsByDoctor = async (req, res) => {
     const details = await client.query(
       `
             SELECT * FROM appointments
-            WHERE doctor_id = $1
-            ORDER BY date
+            WHERE doctor_id = $1 AND status <> 'PENDING'
+            ORDER BY date desc
         `,
       [req.params.id]
     );
@@ -258,7 +258,37 @@ const getAppointmentsByPatient = async (req, res) => {
     const details = await client.query(
       `
               SELECT * FROM appointments
-              WHERE patient_id = $1
+              WHERE patient_id = $1 AND status <> 'PENDING'
+              ORDER BY date desc
+          `,
+      [req.params.id]
+    );
+
+    await client.query("COMMIT");
+    return res.status(200).json(details.rows);
+  } catch (error) {
+    await client.query("ROLLBACK");
+
+    console.error(error.message);
+    return res.status(400).json({
+      status: "error",
+      msg: `Error in getting records for patient ${req.params.id}.`,
+    });
+  } finally {
+    client.release();
+  }
+};
+
+const getUpcomingAppointmentsByPatient = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const details = await client.query(
+      `
+              SELECT * FROM appointments
+              WHERE patient_id = $1 AND status = 'PENDING'
               ORDER BY date
           `,
       [req.params.id]
@@ -288,4 +318,5 @@ module.exports = {
   getAppointmentsByDoctor,
   getUpcomingAppointmentsByDoctor,
   getAppointmentsByPatient,
+  getUpcomingAppointmentsByPatient,
 };

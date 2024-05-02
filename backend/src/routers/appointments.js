@@ -8,6 +8,7 @@ const {
   getAppointmentsByDoctor,
   getAppointmentsByPatient,
   getUpcomingAppointmentsByDoctor,
+  getUpcomingAppointmentsByPatient,
 } = require("../controllers/appointments");
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.delete("/:id", deleteAppointment);
 router.post("/doctor/:id", getAppointmentsByDoctor);
 router.post("/doctor/pending/:id", getUpcomingAppointmentsByDoctor);
 router.post("/patient/:id", getAppointmentsByPatient);
+router.post("/patient/pending/:id", getUpcomingAppointmentsByPatient);
 
 module.exports = router;
