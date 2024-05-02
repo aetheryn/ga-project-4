@@ -10,16 +10,17 @@ const {
   getUpcomingAppointmentsByDoctor,
   getUpcomingAppointmentsByPatient,
 } = require("../controllers/appointments");
+const { authUser } = require("../middleware/auth");
 const router = express.Router();
 
 router.get("/", getAppointments);
 router.get("/seed", seedAppointments);
-router.put("/", addAppointment);
-router.patch("/:id", updateAppointmentStatus);
-router.delete("/:id", deleteAppointment);
-router.post("/doctor/:id", getAppointmentsByDoctor);
-router.post("/doctor/pending/:id", getUpcomingAppointmentsByDoctor);
-router.post("/patient/:id", getAppointmentsByPatient);
-router.post("/patient/pending/:id", getUpcomingAppointmentsByPatient);
+router.put("/", authUser, addAppointment);
+router.patch("/:id", authUser, updateAppointmentStatus);
+router.delete("/:id", authUser, deleteAppointment);
+router.post("/doctor/:id", authUser, getAppointmentsByDoctor);
+router.post("/doctor/pending/:id", authUser, getUpcomingAppointmentsByDoctor);
+router.post("/patient/:id", authUser, getAppointmentsByPatient);
+router.post("/patient/pending/:id", authUser, getUpcomingAppointmentsByPatient);
 
 module.exports = router;

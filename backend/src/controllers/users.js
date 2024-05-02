@@ -3,16 +3,11 @@ const pool = require("../db/db.js");
 const getUsers = async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query("BEGIN");
-
-    const allUsers = await client.query("SELECT * FROM users");
-
-    await client.query("COMMIT");
-
+    const allUsers = await client.query(`
+    SELECT * FROM users
+    `);
     return res.status(200).json(allUsers.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res
       .status(400)
@@ -25,8 +20,6 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query("BEGIN");
-
     const user = await client.query(
       `
     SELECT * FROM users
@@ -34,13 +27,8 @@ const getUser = async (req, res) => {
     `,
       [req.params.id]
     );
-
-    await client.query("COMMIT");
-
     return res.status(200).json(user.rows[0]);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",
@@ -54,8 +42,6 @@ const getUser = async (req, res) => {
 const getUserByFullname = async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query("BEGIN");
-
     const user = await client.query(
       `
     SELECT id FROM users
@@ -64,12 +50,8 @@ const getUserByFullname = async (req, res) => {
       [req.body.fullName]
     );
 
-    await client.query("COMMIT");
-
     return res.status(200).json(user.rows[0]);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",
@@ -80,6 +62,7 @@ const getUserByFullname = async (req, res) => {
   }
 };
 
+// Only THE user can update //
 const updateUser = async (req, res) => {
   const client = await pool.connect();
   try {
@@ -93,7 +76,7 @@ const updateUser = async (req, res) => {
       [req.params.id]
     );
 
-    if (user.rows[0].username !== req.decoded.username) {
+    if (user.rows[0].id !== req.decoded.id) {
       return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
 
@@ -123,6 +106,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Only 'DOCTOR' can delete users //
 const deleteUser = async (req, res) => {
   const client = await pool.connect();
   try {

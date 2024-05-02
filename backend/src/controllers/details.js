@@ -21,16 +21,10 @@ FOREIGN KEY (patient_id) REFERENCES users(id)
 const getDetails = async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query("BEGIN");
-
-    const allDetails = await client.query("SELECT * FROM visit_details");
-
-    await client.query("COMMIT");
+    const allDetails = await client.query(`SELECT * FROM visit_details`);
 
     return res.status(200).json(allDetails.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res
       .status(400)
@@ -40,12 +34,11 @@ const getDetails = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can add a record //
 const addDetails = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
-
     if (req.body.doctorId != req.decoded.id) {
       return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
@@ -66,16 +59,12 @@ const addDetails = async (req, res) => {
       ]
     );
 
-    await client.query("COMMIT");
-
     return res
       .status(200)
       .json(
         `Visit details added for Patient ${req.body.patientId} by Doctor ${req.body.doctorId}`
       );
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res
       .status(400)
@@ -85,6 +74,7 @@ const addDetails = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can update a record that was created by them //
 const updateDetails = async (req, res) => {
   const client = await pool.connect();
 
@@ -138,6 +128,7 @@ const updateDetails = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can delete a record that was created by them //
 const deleteDetails = async (req, res) => {
   const client = await pool.connect();
 
@@ -176,12 +167,11 @@ const deleteDetails = async (req, res) => {
   }
 };
 
+// Either a logged-in 'DOCTOR' OR THE logged-in 'PATIENT' can access the 'PATIENT' records //
 const getDetailsByPatient = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
-
     const details = await client.query(
       `
             SELECT * FROM visit_details
@@ -193,12 +183,8 @@ const getDetailsByPatient = async (req, res) => {
     if (req.decoded.role !== "DOCTOR" && req.decoded.id != req.params.id) {
       return res.status(401).json({ status: "error", msg: "Testing." });
     }
-
-    await client.query("COMMIT");
     return res.status(200).json(details.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",

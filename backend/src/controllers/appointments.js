@@ -4,16 +4,9 @@ const getAppointments = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
-
     const allAppointments = await client.query("SELECT * FROM appointments");
-
-    await client.query("COMMIT");
-
     return res.status(200).json(allAppointments.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res
       .status(400)
@@ -71,15 +64,14 @@ const seedAppointments = async (req, res) => {
   }
 };
 
+// Only the logged-in 'PATIENT' can create an appointment //
 const addAppointment = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
-
-    // if (req.body.patientId != req.decoded.id) {
-    //   return res.status(401).json({ status: "error", msg: "Unauthorised." });
-    // }
+    if (req.body.patientId != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
     await client.query(
       `
@@ -90,16 +82,12 @@ const addAppointment = async (req, res) => {
       [req.body.doctorId, req.body.patientId, req.body.time, req.body.date]
     );
 
-    await client.query("COMMIT");
-
     return res
       .status(200)
       .json(
         `Appointment added for Patient ${req.body.patientId} with Doctor ${req.body.doctorId}.`
       );
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res
       .status(400)
@@ -109,13 +97,14 @@ const addAppointment = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can update their appointment status //
 const updateAppointmentStatus = async (req, res) => {
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
-    const detail = await client.query(
+    const appointment = await client.query(
       `
             SELECT * FROM appointments
             WHERE id = $1
@@ -123,9 +112,9 @@ const updateAppointmentStatus = async (req, res) => {
       [req.params.id]
     );
 
-    // if (detail.rows[0].patient_id != req.decoded.id) {
-    //   return res.status(401).json({ status: "error", msg: "Unauthorised." });
-    // }
+    if (appointment.rows[0].doctor_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
     await client.query(
       `
@@ -151,13 +140,14 @@ const updateAppointmentStatus = async (req, res) => {
   }
 };
 
+// Only the logged-in 'PATIENT' can cancel their appointment //
 const deleteAppointment = async (req, res) => {
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
-    const record = await client.query(
+    const appointment = await client.query(
       `
             SELECT * FROM appointments
             WHERE id = $1
@@ -165,9 +155,9 @@ const deleteAppointment = async (req, res) => {
       [req.params.id]
     );
 
-    // if (record.rows[0].doctor_id != req.decoded.id) {
-    //   return res.status(401).json({ status: "error", msg: "Unauthorised." });
-    // }
+    if (appointment.rows[0].patient_id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
     await client.query(
       `
@@ -189,13 +179,16 @@ const deleteAppointment = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can get their own non-pending appointments //
 const getAppointmentsByDoctor = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
+    if (req.params.id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
-    const details = await client.query(
+    const appointments = await client.query(
       `
             SELECT * FROM appointments
             WHERE doctor_id = $1 AND status <> 'PENDING'
@@ -204,11 +197,8 @@ const getAppointmentsByDoctor = async (req, res) => {
       [req.params.id]
     );
 
-    await client.query("COMMIT");
-    return res.status(200).json(details.rows);
+    return res.status(200).json(appointments.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",
@@ -219,13 +209,15 @@ const getAppointmentsByDoctor = async (req, res) => {
   }
 };
 
+// Only the logged-in 'DOCTOR' can get their own pending appointments //
 const getUpcomingAppointmentsByDoctor = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
-
-    const details = await client.query(
+    if (req.params.id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
+    const appointments = await client.query(
       `
               SELECT * FROM appointments
               WHERE doctor_id = $1 AND status = 'PENDING'
@@ -235,7 +227,7 @@ const getUpcomingAppointmentsByDoctor = async (req, res) => {
     );
 
     await client.query("COMMIT");
-    return res.status(200).json(details.rows);
+    return res.status(200).json(appointments.rows);
   } catch (error) {
     await client.query("ROLLBACK");
 
@@ -249,11 +241,14 @@ const getUpcomingAppointmentsByDoctor = async (req, res) => {
   }
 };
 
+// Only the logged-in 'PATIENT' can get their own non-pending appointments //
 const getAppointmentsByPatient = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
+    if (req.params.id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
     const details = await client.query(
       `
@@ -264,11 +259,8 @@ const getAppointmentsByPatient = async (req, res) => {
       [req.params.id]
     );
 
-    await client.query("COMMIT");
     return res.status(200).json(details.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",
@@ -279,11 +271,14 @@ const getAppointmentsByPatient = async (req, res) => {
   }
 };
 
+// Only the logged-in 'PATIENT' can get their own pending appointments //
 const getUpcomingAppointmentsByPatient = async (req, res) => {
   const client = await pool.connect();
 
   try {
-    await client.query("BEGIN");
+    if (req.params.id != req.decoded.id) {
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
+    }
 
     const details = await client.query(
       `
@@ -294,11 +289,8 @@ const getUpcomingAppointmentsByPatient = async (req, res) => {
       [req.params.id]
     );
 
-    await client.query("COMMIT");
     return res.status(200).json(details.rows);
   } catch (error) {
-    await client.query("ROLLBACK");
-
     console.error(error.message);
     return res.status(400).json({
       status: "error",
