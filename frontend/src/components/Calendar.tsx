@@ -10,7 +10,7 @@ function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
   const today = new Date();
   const month = today.getMonth();
   const year = today.getFullYear();
-  const numOfDays = new Date(year, month, 0).getDate() + 1;
+  const numOfDays = new Date(year, month + 1, 0).getDate();
 
   const weekDays: Array<string> = [
     "Sun",
@@ -26,9 +26,11 @@ function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
   const dayOfWeekFirstDay = firstDayOfMonth.getDay();
 
   function handleDayClick(event: SyntheticEvent, day: number): void {
-    const date = new Date(year, month, day).toISOString().slice(0, 10);
+    const date = new Date(year, month, day, 8, 0).toISOString().slice(0, 10);
     setSelectedDate(date);
     addActiveClass(event);
+    console.log(numOfDays);
+    console.log(date);
   }
 
   function addActiveClass(event: SyntheticEvent): void {
@@ -51,7 +53,7 @@ function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
     }
 
     for (let i = dayOfWeekFirstDay; i < 7; i++) {
-      const day = dayCounter + 1;
+      const day = dayCounter;
       row.push(
         <div
           key={`${dayCounter}`}
@@ -72,7 +74,7 @@ function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
     while (dayCounter <= numOfDays) {
       row = [];
       for (let i = 0; i < 7 && dayCounter <= numOfDays; i++) {
-        const day = dayCounter + 1;
+        const day = dayCounter;
         row.push(
           <div
             key={`${dayCounter}`}
