@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { Appointment } from "../classes/appointment";
 import { User } from "../classes/user";
 import useFetch from "../hooks/useFetch";
+import UserContext from "../context/user";
 
 interface AppointmentProps {
   appointment: Appointment;
+  getDoctorAppointments: () => void;
 }
 
-function DocAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
+function DocAppointmentCard(props: AppointmentProps): JSX.Element {
+  const { appointment, getDoctorAppointments } = props;
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -19,7 +22,10 @@ function DocAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
     role: "",
     pending_approval: false,
   });
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
   const fetchData = useFetch();
+  const userCtx = useContext(UserContext);
 
   async function getPatientDetails() {
     try {
@@ -42,11 +48,68 @@ function DocAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
     getPatientDetails();
   }, []);
 
+  function handleClick(): void {
+    setIsUpdating(true);
+  }
+
+  async function updateStatus() {
+    try {
+      const response: any = await fetchData(
+        "/appointments/" + appointment.id,
+        "PATCH",
+        { status: status },
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        getDoctorAppointments();
+        setIsUpdating(false);
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
+  function handleStatusSelect(event: SyntheticEvent): void {
+    const selectElement = event.currentTarget as HTMLOptionElement;
+    setStatus(selectElement.value);
+  }
+
+  function formatDisplayedStatus(string: string): string | undefined {
+    if (string === "PENDING") {
+      return "Pending";
+    }
+  }
+
   return (
-    <div>
-      Appointment at {appointment.date.toString().slice(0, 10)},{" "}
-      {appointment.time.toString().slice(0, 5)} with {associatedUser.full_name}.
-    </div>
+    <tr>
+      <td>{appointment.date.toString().slice(0, 10)}</td>
+      <td>{appointment.time.toString().slice(0, 5)}</td>
+      <td>{associatedUser.full_name}</td>
+      {!isUpdating && (
+        <>
+          <td>{formatDisplayedStatus(appointment.status)}</td>
+          <td>
+            <button onClick={handleClick}>Update Status</button>
+          </td>
+        </>
+      )}
+      {isUpdating && (
+        <>
+          <td>
+            <select onChange={(event) => handleStatusSelect(event)}>
+              <option value={"PENDING"}>Pending</option>
+              <option value={"COMPLETED"}>Completed</option>
+              <option value={"MISSED"}>Missed</option>
+            </select>
+          </td>
+          <td>
+            <button onClick={() => updateStatus()}>Save</button>
+            <button onClick={() => setIsUpdating(false)}>Cancel</button>
+          </td>
+        </>
+      )}
+    </tr>
   );
 }
 

@@ -42,14 +42,25 @@ function Appointments(): JSX.Element {
   return (
     <div>
       <h1>Upcoming Appointments</h1>
-      {appointments.map((appointment) => (
-        <DocAppointmentCard
-          key={appointment.id}
-          appointment={appointment}
-        ></DocAppointmentCard>
-      ))}
+      <table className="user-table">
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Patient</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
 
-      <h2>Availability</h2>
+        {appointments.map((appointment) => (
+          <DocAppointmentCard
+            key={appointment.id}
+            appointment={appointment}
+            getDoctorAppointments={getDoctorAppointments}
+          ></DocAppointmentCard>
+        ))}
+      </table>
+
+      {/* <h2>Availability</h2>
       <div>
         {availability.map((isAvailable, index) => (
           <button
@@ -60,7 +71,7 @@ function Appointments(): JSX.Element {
             {index}:00
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
