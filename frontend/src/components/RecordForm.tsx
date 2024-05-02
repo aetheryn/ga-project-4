@@ -1,9 +1,10 @@
 import { useContext, useEffect, useRef } from "react";
-import { TextField, Autocomplete, Button } from "@mui/material";
+// import { TextField,  } from "@mui/material";
 import { useState } from "react";
 import { User } from "../classes/user";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
+import Autocomplete from "./Autocomplete";
 
 interface FormProps {
   getAllRecords: () => void;
@@ -13,13 +14,11 @@ interface FormProps {
 function RecordForm(props: FormProps): JSX.Element {
   const { getAllRecords, setShowForm } = props;
   const [allPatients, setAllPatients] = useState<User[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
   const [userId, setUserId] = useState<User["id"]>(0);
   const fetchData = useFetch();
   const userCtx = useContext(UserContext);
 
-  const nameRef = useRef<HTMLInputElement>(
-    document.querySelector("#patient-name")
-  );
   const subjRef = useRef<HTMLTextAreaElement>(
     document.querySelector("#subjective")
   );
@@ -39,12 +38,12 @@ function RecordForm(props: FormProps): JSX.Element {
     setAllPatients(listOfPatients);
   }
 
-  async function getUserId() {
+  async function getUserId(inputValue: string) {
     try {
       const response: any = await fetchData(
         "/users",
         "POST",
-        { fullName: nameRef.current?.value },
+        { fullName: inputValue },
         undefined
       );
 
@@ -89,7 +88,7 @@ function RecordForm(props: FormProps): JSX.Element {
 
   return (
     <form className="record-form">
-      <Autocomplete
+      {/* <Autocomplete
         freeSolo
         id="patient-name"
         options={allPatients.map((user) => user.full_name)}
@@ -97,7 +96,15 @@ function RecordForm(props: FormProps): JSX.Element {
           <TextField {...params} label="Patient Name" inputRef={nameRef} />
         )}
         onSelect={getUserId}
-      />
+      /> */}
+      <label>Patient Name</label>
+      <Autocomplete
+        allPatients={allPatients}
+        setAllPatients={setAllPatients}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        getUserId={getUserId}
+      ></Autocomplete>
 
       <label>Subjective</label>
       <textarea
@@ -139,7 +146,13 @@ function RecordForm(props: FormProps): JSX.Element {
         style={{ resize: "none" }}
       ></textarea>
 
-      <button className="button" onClick={() => createDetails()}>
+      <button
+        className="button"
+        onClick={(event) => {
+          event.preventDefault();
+          createDetails();
+        }}
+      >
         Create
       </button>
 
