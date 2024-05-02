@@ -6,11 +6,11 @@ import UserContext from "../context/user";
 
 interface AppointmentProps {
   appointment: Appointment;
-  getPatientAppointments: () => void;
+  getPendingPatAppointments: () => void;
 }
 
 function PatAppointmentCard(props: AppointmentProps): JSX.Element {
-  const { appointment, getPatientAppointments } = props;
+  const { appointment, getPendingPatAppointments } = props;
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -68,11 +68,19 @@ function PatAppointmentCard(props: AppointmentProps): JSX.Element {
       );
 
       if (response.ok) {
-        getPatientAppointments();
+        getPendingPatAppointments();
       }
     } catch (error: any) {
       console.error(error.message);
     }
+  }
+
+  function formatDisplayedStatus(string: string): string {
+    if (string === "PENDING") {
+      return "Pending";
+    } else if (string === "COMPLETED") {
+      return "Completed";
+    } else return "Missed";
   }
 
   return (
@@ -81,9 +89,13 @@ function PatAppointmentCard(props: AppointmentProps): JSX.Element {
       <td>{appointment.time.toString().slice(0, 5)}</td>
       <td>{associatedUser.full_name}</td>
       <td>
-        <button onClick={handleClick} className="button">
-          Cancel Appointment
-        </button>
+        {appointment.status === "PENDING" ? (
+          <button onClick={handleClick} className="button">
+            Cancel Appointment
+          </button>
+        ) : (
+          <>{formatDisplayedStatus(appointment.status)}</>
+        )}
       </td>
     </tr>
   );

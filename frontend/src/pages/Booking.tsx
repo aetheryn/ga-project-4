@@ -2,9 +2,9 @@ import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { Appointment } from "../classes/appointment";
 import UserContext from "../context/user";
-import PatAppointmentCard from "../components/PatAppointmentCard";
 import { User } from "../classes/user";
 import Calendar from "../components/Calendar";
+import { useNavigate } from "react-router-dom";
 
 function Booking(): JSX.Element {
   const fetchData = useFetch();
@@ -14,6 +14,7 @@ function Booking(): JSX.Element {
   const [selectedDoctor, setSelectedDoctor] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const navigate = useNavigate();
 
   const handleTimeSelect = (event: SyntheticEvent): void => {
     const selectElement = event.currentTarget as HTMLOptionElement;
@@ -25,24 +26,6 @@ function Booking(): JSX.Element {
     setSelectedDoctor(Number(selectElement.value));
   }
 
-  async function getPatientAppointments() {
-    try {
-      const response: any = await fetchData(
-        "/appointments/patient/" + userCtx.loggedInUser.id,
-        "POST",
-        undefined,
-        userCtx.accessToken
-      );
-
-      if (response.ok) {
-        setAppointments(response.data);
-        console.log(response.data);
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-
   function getDoctors() {
     const tempArray: User[] = [...userCtx.allUsers];
     const listOfDoctors: User[] = tempArray.filter(
@@ -52,7 +35,6 @@ function Booking(): JSX.Element {
   }
 
   useEffect(() => {
-    getPatientAppointments();
     getDoctors();
   }, []);
 
@@ -72,7 +54,7 @@ function Booking(): JSX.Element {
       );
 
       if (response.ok) {
-        getPatientAppointments();
+        navigate("/appointments");
       }
     } catch (error: any) {
       console.error(error.message);
@@ -140,24 +122,6 @@ function Booking(): JSX.Element {
       <button className="button" onClick={handleClick}>
         Book Appointment
       </button>
-
-      <h1>Upcoming Appointments</h1>
-      <table className="user-table">
-        <tr>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Doctor</th>
-          <th></th>
-        </tr>
-
-        {appointments.map((appointment) => (
-          <PatAppointmentCard
-            key={appointment.id}
-            appointment={appointment}
-            getPatientAppointments={getPatientAppointments}
-          ></PatAppointmentCard>
-        ))}
-      </table>
     </div>
   );
 }
