@@ -44,16 +44,16 @@ function UserSideCard({ selectedUser }: UserSideCardProps): JSX.Element {
           display: "grid",
           margin: "auto",
           padding: "0.5rem",
+          border: "solid #687169",
           borderRadius: "20px",
           width: "80%",
-          maxHeight: "50vh",
-          backgroundColor: "#d0d9cd",
+          backgroundColor: "transparent",
           color: "#383838",
         }}
       >
         <h1>{selectedUser?.full_name}</h1>
 
-        <div className="user-details">
+        <div className="user-details" style={{ marginTop: "-2rem" }}>
           <div className="user-heading">Username</div>
           <div>{selectedUser?.username}</div>
           <br />
@@ -72,11 +72,9 @@ function UserSideCard({ selectedUser }: UserSideCardProps): JSX.Element {
               <div className="user-heading">Consultation Dates</div>
               {patientRecords.map((record) => {
                 return (
-                  <>
-                    <a onClick={() => setShowRecord(true)}>
-                      {record?.created_at.toString().slice(0, 10)}
-                    </a>
-                  </>
+                  <div onClick={() => setShowRecord(true)}>
+                    {record?.created_at.toString().slice(0, 10)}
+                  </div>
                 );
               })}
             </>
