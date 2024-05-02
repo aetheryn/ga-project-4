@@ -1,0 +1,41 @@
+.container {
+  max-width: 30vw;
+  margin: 0 auto;
+  padding: 1rem;
+  /* border: #d0d9cd; */
+  border-radius: 20px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.heading {
+  text-align: center;
+  color: #687169;
+}
+
+.profileInfo {
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f4f3ef;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 2rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.label {
+  width: 150px;
+  font-weight: bold;
+  color: #666;
+  text-align: end;
+}
+
+.info {
+  flex: 1;
+  color: #444;
+  text-align: start;
+}
