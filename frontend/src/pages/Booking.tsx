@@ -18,9 +18,9 @@ function Booking(): JSX.Element {
     setSelectedDate(date);
   };
 
-  const handleTimeSelect = (time: string) => {
-    console.log(time + ":00");
-    setSelectedTime("10:00:00");
+  const handleTimeSelect = (event: SyntheticEvent): void => {
+    const selectElement = event.currentTarget as HTMLOptionElement;
+    setSelectedTime(selectElement.value + ":00");
   };
 
   function handleSelectDoctor(event: SyntheticEvent): void {
@@ -66,7 +66,7 @@ function Booking(): JSX.Element {
         {
           doctorId: selectedDoctor,
           patientId: userCtx.loggedInUser.id,
-          time: "10:00:00",
+          time: selectedTime,
           date: selectedDate,
         },
         userCtx.accessToken
@@ -82,60 +82,76 @@ function Booking(): JSX.Element {
 
   function handleClick() {
     createAppointment();
-    console.log(selectedDoctor);
-    setSelectedDate(new Date());
-    setSelectedTime("");
-    setSelectedDoctor(0);
   }
 
   return (
     <div>
       <h1>Book an Appointment</h1>
-      <label htmlFor="date">Date:</label>
-
       <select
         onChange={(event) => {
           handleSelectDoctor(event);
         }}
       >
+        <option disabled selected>
+          --- Please select a doctor ---
+        </option>
         {allDoctors.map((doctor) => {
           return <option value={doctor.id}>{doctor.full_name}</option>;
         })}
       </select>
+
+      <label htmlFor="date">Date:</label>
+
       <input
         type="date"
         id="date"
         min={new Date().toISOString().split("T")[0]}
         max={
-          new Date()
-            .setDate(new Date().getDate() + 7)
-            .toString()
+          new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+            .toISOString()
             .split("T")[0]
         }
         value={selectedDate.toISOString().split("T")[0]}
         onChange={(e) => handleDateChange(new Date(e.target.value))}
       />
+
       <label htmlFor="time">Time:</label>
-      <select
-        id="time"
-        value={selectedTime}
-        onChange={(e) => handleTimeSelect(e.target.value)}
-      >
-        {[...Array(8)].map((_, i) => (
-          <option key={i} value={`10:${i * 30 + 10}`}>{`10:${
-            i * 30 + 10
-          }`}</option>
-        ))}
+
+      <select id="time" onChange={(event) => handleTimeSelect(event)}>
+        <option disabled selected>
+          --- Please select a time ---
+        </option>
+        {[...Array(15)].map((_, i) => {
+          const hour = Math.floor(i / 2) + 9; // Starting from 9
+          const minute = i % 2 === 0 ? "00" : "30"; // Half-hour intervals
+          const time = `${hour.toString().padStart(2, "0")}:${minute}`;
+          return (
+            <option key={i} value={time}>
+              {time}
+            </option>
+          );
+        })}
       </select>
+
       <button onClick={handleClick}>Book Appointment</button>
 
       <h1>Upcoming Appointments</h1>
-      {appointments.map((appointment) => (
-        <PatAppointmentCard
-          key={appointment.id}
-          appointment={appointment}
-        ></PatAppointmentCard>
-      ))}
+      <table className="user-table">
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Doctor</th>
+          <th></th>
+        </tr>
+
+        {appointments.map((appointment) => (
+          <PatAppointmentCard
+            key={appointment.id}
+            appointment={appointment}
+            getPatientAppointments={getPatientAppointments}
+          ></PatAppointmentCard>
+        ))}
+      </table>
     </div>
   );
 }

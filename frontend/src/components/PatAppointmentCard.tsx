@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Appointment } from "../classes/appointment";
 import { User } from "../classes/user";
 import useFetch from "../hooks/useFetch";
+import UserContext from "../context/user";
 
 interface AppointmentProps {
   appointment: Appointment;
+  getPatientAppointments: () => void;
 }
 
-function PatAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
+function PatAppointmentCard(props: AppointmentProps): JSX.Element {
+  const { appointment, getPatientAppointments } = props;
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -20,6 +23,7 @@ function PatAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
     pending_approval: false,
   });
   const fetchData = useFetch();
+  const userCtx = useContext(UserContext);
 
   async function getDoctorDetails() {
     try {
@@ -42,11 +46,36 @@ function PatAppointmentCard({ appointment }: AppointmentProps): JSX.Element {
     getDoctorDetails();
   }, []);
 
+  function handleClick(): void {
+    deleteAppointment();
+  }
+
+  async function deleteAppointment() {
+    try {
+      const response: any = await fetchData(
+        "/appointments/" + appointment.id,
+        "DELETE",
+        undefined,
+        userCtx.accessToken
+      );
+
+      if (response.ok) {
+        getPatientAppointments();
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   return (
-    <div>
-      Appointment at {appointment.date.toString().slice(0, 10)},{" "}
-      {appointment.time.toString().slice(0, 5)} with {associatedUser.full_name}.
-    </div>
+    <tr>
+      <td>{appointment.date.toString().slice(0, 10)}</td>
+      <td>{appointment.time.toString().slice(0, 5)}</td>
+      <td>{associatedUser.full_name}</td>
+      <td>
+        <button onClick={handleClick}>Cancel Appointment</button>
+      </td>
+    </tr>
   );
 }
 
