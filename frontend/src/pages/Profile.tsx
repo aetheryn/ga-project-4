@@ -116,14 +116,14 @@ function Profile(): JSX.Element {
       )}
 
       {isUpdating && (
-        <>
+        <div className={styles.buttonwrapper}>
           <button className="button" onClick={handleClick}>
             Save
           </button>
           <button className="button" onClick={() => setIsUpdating(false)}>
             Cancel
           </button>
-        </>
+        </div>
       )}
     </div>
   );

@@ -7,11 +7,6 @@
   /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
 
-.heading {
-  text-align: center;
-  color: #687169;
-}
-
 .profileInfo {
   border-radius: 10px;
   padding: 1rem;
@@ -30,7 +25,6 @@
 .label {
   width: 150px;
   font-weight: bold;
-  color: #666;
   text-align: end;
 }
 
@@ -38,4 +32,11 @@
   flex: 1;
   color: #444;
   text-align: start;
+}
+
+.buttonwrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
