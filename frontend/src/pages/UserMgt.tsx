@@ -34,8 +34,8 @@ function UserMgt(): JSX.Element {
   return (
     <>
       <div className="container">
-        <h1>List of Users</h1>
-        <table className="user-table">
+        <h1 style={{ textAlign: "left" }}>List of Users</h1>
+        <table className="user-list" style={{ textAlign: "left" }}>
           <tr>
             <th>Name</th>
             <th>Role</th>
