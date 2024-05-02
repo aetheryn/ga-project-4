@@ -13,23 +13,14 @@
   position: relative;
   background: white;
   border-radius: 30px;
-  left: 30%;
-  top: 30%;
-  width: 35%;
-  height: 35%;
+  left: 35%;
+  top: 40%;
+  width: 30%;
+  height: 20%;
   z-index: 100;
   overflow: auto;
   z-index: 100;
 }
-
-/* .modal-dialog {
-  overflow-y: initial;
-}
-
-.modal-body {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-} */
 
 .container {
   margin: auto;
