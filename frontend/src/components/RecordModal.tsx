@@ -43,7 +43,7 @@ function Overlay(props: ModalProps): JSX.Element {
 
   const userCtx = useContext(UserContext);
 
-  async function updateDetails(): Promise<void> {
+  async function updateDetails() {
     try {
       const response: any = await fetchData(
         "/details/" + record.id,
