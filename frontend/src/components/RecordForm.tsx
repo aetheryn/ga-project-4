@@ -20,14 +20,16 @@ function RecordForm(props: FormProps): JSX.Element {
   const nameRef = useRef<HTMLInputElement>(
     document.querySelector("#patient-name")
   );
-  const subjRef = useRef<HTMLInputElement>(
+  const subjRef = useRef<HTMLTextAreaElement>(
     document.querySelector("#subjective")
   );
-  const objRef = useRef<HTMLInputElement>(document.querySelector("#objective"));
-  const assRef = useRef<HTMLInputElement>(
+  const objRef = useRef<HTMLTextAreaElement>(
+    document.querySelector("#objective")
+  );
+  const assRef = useRef<HTMLTextAreaElement>(
     document.querySelector("#assessment")
   );
-  const planRef = useRef<HTMLInputElement>(document.querySelector("#plan"));
+  const planRef = useRef<HTMLTextAreaElement>(document.querySelector("#plan"));
 
   function getPatients() {
     const tempArray: User[] = [...userCtx.allUsers];
@@ -86,7 +88,7 @@ function RecordForm(props: FormProps): JSX.Element {
   }, []);
 
   return (
-    <form>
+    <form className="record-form">
       <Autocomplete
         freeSolo
         id="patient-name"
@@ -97,51 +99,59 @@ function RecordForm(props: FormProps): JSX.Element {
         onSelect={getUserId}
       />
 
-      <TextField
+      <label>Subjective</label>
+      <textarea
         required
-        fullWidth
         id="subjective"
-        label="Subjective"
-        multiline
-        maxRows={8}
-        variant="outlined"
-        inputRef={subjRef}
-      ></TextField>
+        ref={subjRef}
+        className="record-form-input"
+        rows={4}
+        style={{ resize: "none" }}
+      ></textarea>
 
-      <TextField
+      <label>Objective</label>
+      <textarea
         required
-        fullWidth
         id="objective"
-        label="Objective"
-        multiline
-        maxRows={8}
-        variant="outlined"
-        inputRef={objRef}
-      ></TextField>
+        ref={objRef}
+        className="record-form-input"
+        rows={4}
+        style={{ resize: "none" }}
+      ></textarea>
 
-      <TextField
+      <label>Assessment</label>
+      <textarea
         required
-        fullWidth
         id="assessment"
-        label="Assessment"
-        multiline
-        maxRows={8}
-        variant="outlined"
-        inputRef={assRef}
-      ></TextField>
+        ref={assRef}
+        className="record-form-input"
+        rows={4}
+        style={{ resize: "none" }}
+      ></textarea>
 
-      <TextField
+      <label>Plan</label>
+      <textarea
         required
-        fullWidth
         id="plan"
-        label="Plan"
-        multiline
-        maxRows={8}
-        variant="outlined"
-        inputRef={planRef}
-      ></TextField>
+        ref={planRef}
+        className="record-form-input"
+        rows={4}
+        style={{ resize: "none" }}
+      ></textarea>
 
-      <Button onClick={() => createDetails()}>Create</Button>
+      <button className="button" onClick={() => createDetails()}>
+        Create
+      </button>
+
+      <button
+        className="button"
+        onClick={() => {
+          setShowForm(false);
+        }}
+        style={{ marginTop: "0.5rem" }}
+      >
+        Cancel
+      </button>
     </form>
   );
 }

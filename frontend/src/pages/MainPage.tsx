@@ -3,7 +3,6 @@ import RecordCard from "../components/RecordCard";
 import { Record } from "../classes/record";
 import useFetch from "../hooks/useFetch";
 import RecordForm from "../components/RecordForm";
-import { Button } from "@mui/material";
 
 function MainPage(): JSX.Element {
   const [allRecords, setAllRecords] = useState<Record[]>([]);
@@ -40,13 +39,6 @@ function MainPage(): JSX.Element {
             getAllRecords={getAllRecords}
             setShowForm={setShowForm}
           ></RecordForm>
-          <Button
-            onClick={() => {
-              setShowForm(false);
-            }}
-          >
-            Cancel
-          </Button>
         </>
       )}
 
