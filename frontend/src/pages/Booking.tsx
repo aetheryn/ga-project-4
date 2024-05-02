@@ -84,12 +84,12 @@ function Booking(): JSX.Element {
         </select>
       </div>
 
-      {selectedDoctor && (
+      {selectedDoctor !== 0 ? (
         <div style={{ margin: "2rem 0 2rem 0" }}>
           <h3>Date:</h3>
           <Calendar setSelectedDate={setSelectedDate}></Calendar>
         </div>
-      )}
+      ) : null}
 
       {selectedDate && (
         <div style={{ margin: "2rem 0 2rem 0" }}>
