@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Record } from "../classes/record";
@@ -6,6 +6,7 @@ import useFetch from "../hooks/useFetch";
 import { User } from "../classes/user";
 import RecordModal from "./RecordModal";
 import DeleteAlert from "./DeleteAlert";
+import UserContext from "../context/user";
 
 interface RecordCardProps {
   record: Record;
@@ -29,6 +30,7 @@ function RecordCard(props: RecordCardProps): JSX.Element {
     pending_approval: false,
   });
   const fetchData = useFetch();
+  const userCtx = useContext(UserContext);
 
   function handleUserSelect(user: User): void {
     setSelectedUser(user);
@@ -112,14 +114,16 @@ function RecordCard(props: RecordCardProps): JSX.Element {
           <div className="description">{record.plan}</div>
         </CardContent>
 
-        <button
-          onClick={() => {
-            setShowAlert(true);
-          }}
-          className="delete-button"
-        >
-          &#x2715;
-        </button>
+        {userCtx.loggedInUser.id === record.doctor_id && (
+          <button
+            onClick={() => {
+              setShowAlert(true);
+            }}
+            className="delete-button"
+          >
+            &#x2715;
+          </button>
+        )}
       </Card>
     </>
   );
