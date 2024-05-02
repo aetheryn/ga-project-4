@@ -43,7 +43,7 @@ function MainPage(): JSX.Element {
       )}
 
       {!showForm && (
-        <div style={{ display: "grid" }}>
+        <div className="row" style={{ display: "grid" }}>
           <button
             className="button"
             onClick={() => {
@@ -53,17 +53,19 @@ function MainPage(): JSX.Element {
           >
             + New Record
           </button>
-          {allRecords.map((record) => {
-            return (
-              <div className="cols-sm">
-                <RecordCard
-                  record={record}
-                  getAllRecords={getAllRecords}
-                  allRecords={allRecords}
-                ></RecordCard>
-              </div>
-            );
-          })}
+          <div className="card-container">
+            {allRecords.map((record) => {
+              return (
+                <div>
+                  <RecordCard
+                    record={record}
+                    getAllRecords={getAllRecords}
+                    allRecords={allRecords}
+                  ></RecordCard>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

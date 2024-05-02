@@ -89,6 +89,7 @@ function RecordCard(props: RecordCardProps): JSX.Element {
         ></DeleteAlert>
       )}
       <Card
+        className="card"
         style={{
           display: "block",
           margin: "1rem 0 0 0",
@@ -101,9 +102,14 @@ function RecordCard(props: RecordCardProps): JSX.Element {
           style={{ display: "block" }}
           onClick={(event) => handleClick(event)}
         >
+          <label>Patient</label>
           <div className="title">{selectedUser.full_name}</div>
-          <div className="description">A: {record.assessment}</div>
-          <div className="description">P: {record.plan}</div>
+
+          <label>Assessment</label>
+          <div className="description">{record.assessment}</div>
+
+          <label>Plan</label>
+          <div className="description">{record.plan}</div>
         </CardContent>
 
         <button
