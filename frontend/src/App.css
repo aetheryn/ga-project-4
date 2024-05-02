@@ -62,11 +62,16 @@ select:focus {
 .title {
   font-size: large;
   font-weight: 700;
-  text-align: left;
+  margin-top: -0.2rem;
+  width: 100%;
+  text-overflow: ellipsis;
 }
 
 .description {
-  text-align: left;
+  margin-top: -0.2rem;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .button {
@@ -123,6 +128,27 @@ select:focus {
   margin: auto;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.card {
+  width: 18rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.card-content {
+  text-align: left;
+}
+
+.card-content > label {
+  font-weight: 700;
+  font-size: 0.5rem;
+}
+
 .delete-button {
   background-color: transparent;
   border-color: transparent;
@@ -145,10 +171,20 @@ select:focus {
   margin-top: 5rem;
 }
 
+.user-side-card {
+  display: grid;
+  margin: auto;
+  padding: 0.5rem;
+  border-radius: 20px;
+  width: 80%;
+  max-height: 50vh;
+  background-color: #d0d9cd;
+  color: #383838;
+}
+
 .user-details {
   display: grid;
   text-align: start;
-  margin-bottom: 2rem;
   padding: 2rem;
 }
 
