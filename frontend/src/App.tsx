@@ -8,7 +8,6 @@ import UserContext from "./context/user";
 import Registration from "./pages/Registration";
 import { User } from "./classes/user";
 import LeftBar from "./components/LeftBar";
-import RightBar from "./components/RightBar";
 import UserMgt from "./pages/UserMgt";
 import useFetch from "./hooks/useFetch";
 import DocAppointments from "./pages/DocAppointments";

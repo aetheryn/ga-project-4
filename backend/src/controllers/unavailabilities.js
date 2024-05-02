@@ -53,7 +53,7 @@ const seedUnavailabilities = async (req, res) => {
       `
                   INSERT INTO unavailabilities(
                       doctor_id, time, date
-                  ) VALUES ('4', '17:20:000', '2024-06-03')
+                  ) VALUES ('4', '17:30:000', '2024-06-03')
   
                   `
     );

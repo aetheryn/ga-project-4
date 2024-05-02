@@ -3,7 +3,6 @@ import styles from "./Modal.module.css";
 import { Record } from "../classes/record";
 import { User } from "../classes/user";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Button, TextField } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import UserContext from "../context/user";
 

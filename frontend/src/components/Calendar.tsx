@@ -2,11 +2,10 @@ import { SyntheticEvent } from "react";
 import styles from "./Calendar.module.css";
 
 interface CalendarProps {
-  selectedDate: string;
   setSelectedDate: (arg: string) => void;
 }
 
-function Calendar({ selectedDate, setSelectedDate }: CalendarProps) {
+function Calendar({ setSelectedDate }: CalendarProps) {
   const today = new Date();
   const month = today.getMonth();
   const year = today.getFullYear();

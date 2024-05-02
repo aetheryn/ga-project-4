@@ -1,6 +1,5 @@
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
-import { Appointment } from "../classes/appointment";
 import UserContext from "../context/user";
 import { User } from "../classes/user";
 import Calendar from "../components/Calendar";
@@ -8,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 function Booking(): JSX.Element {
   const fetchData = useFetch();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const userCtx = useContext(UserContext);
   const [allDoctors, setAllDoctors] = useState<User[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number>(0);
@@ -86,36 +84,37 @@ function Booking(): JSX.Element {
         </select>
       </div>
 
-      <div style={{ margin: "2rem 0 2rem 0" }}>
-        <h3>Date:</h3>
-        <Calendar
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-        ></Calendar>
-      </div>
+      {selectedDoctor && (
+        <div style={{ margin: "2rem 0 2rem 0" }}>
+          <h3>Date:</h3>
+          <Calendar setSelectedDate={setSelectedDate}></Calendar>
+        </div>
+      )}
 
-      <div style={{ margin: "2rem 0 2rem 0" }}>
-        <h3>Time:</h3>
-        <select
-          id="time"
-          onChange={(event) => handleTimeSelect(event)}
-          style={{ fontSize: "1rem" }}
-        >
-          <option disabled selected>
-            --- Please select a time ---
-          </option>
-          {[...Array(15)].map((_, i) => {
-            const hour = Math.floor(i / 2) + 9; // Starting from 9
-            const minute = i % 2 === 0 ? "00" : "30"; // Half-hour intervals
-            const time = `${hour.toString().padStart(2, "0")}:${minute}`;
-            return (
-              <option key={i} value={time}>
-                {time}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      {selectedDate && (
+        <div style={{ margin: "2rem 0 2rem 0" }}>
+          <h3>Time:</h3>
+          <select
+            id="time"
+            onChange={(event) => handleTimeSelect(event)}
+            style={{ fontSize: "1rem" }}
+          >
+            <option disabled selected>
+              --- Please select a time ---
+            </option>
+            {[...Array(15)].map((_, i) => {
+              const hour = Math.floor(i / 2) + 9; // Starting from 9
+              const minute = i % 2 === 0 ? "00" : "30"; // Half-hour intervals
+              const time = `${hour.toString().padStart(2, "0")}:${minute}`;
+              return (
+                <option key={i} value={time}>
+                  {time}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      )}
 
       <br />
 
