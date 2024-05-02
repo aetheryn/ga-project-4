@@ -74,6 +74,7 @@ function DocAppointments(): JSX.Element {
             key={appointment.id}
             appointment={appointment}
             getPendingDocAppointments={getPendingDocAppointments}
+            getDoctorAppointments={getDoctorAppointments}
           ></DocAppointmentCard>
         ))}
       </table>
@@ -92,6 +93,7 @@ function DocAppointments(): JSX.Element {
             key={appointment.id}
             appointment={appointment}
             getPendingDocAppointments={getPendingDocAppointments}
+            getDoctorAppointments={getDoctorAppointments}
           ></DocAppointmentCard>
         ))}
       </table>

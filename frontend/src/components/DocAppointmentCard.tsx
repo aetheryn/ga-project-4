@@ -7,10 +7,12 @@ import UserContext from "../context/user";
 interface AppointmentProps {
   appointment: Appointment;
   getPendingDocAppointments: () => void;
+  getDoctorAppointments: () => void;
 }
 
 function DocAppointmentCard(props: AppointmentProps): JSX.Element {
-  const { appointment, getPendingDocAppointments } = props;
+  const { appointment, getPendingDocAppointments, getDoctorAppointments } =
+    props;
   const [associatedUser, setAssociatedUser] = useState<User>({
     id: 0,
     username: "",
@@ -63,6 +65,7 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
 
       if (response.ok) {
         getPendingDocAppointments();
+        getDoctorAppointments();
         setIsUpdating(false);
       }
     } catch (error: any) {
