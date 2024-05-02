@@ -49,38 +49,44 @@ function PatientDashboard(): JSX.Element {
 
   return (
     <div className="card-container">
-      {patientRecords.map((record) => {
-        return (
-          <div className="cols-sm">
-            <Card
-              className="card"
-              style={{
-                display: "block",
-                margin: "1rem 0 0 0",
-                padding: "0.5rem",
-                borderRadius: "20px",
-              }}
-            >
-              <CardContent
-                className="card-content"
-                style={{ display: "block" }}
-                onClick={() => handleSelect(record)}
+      {patientRecords.length == 0 && (
+        <div>
+          <h1>You have no consultation records.</h1>
+        </div>
+      )}
+      {patientRecords.length > 0 &&
+        patientRecords.map((record) => {
+          return (
+            <div className="cols-sm">
+              <Card
+                className="card"
+                style={{
+                  display: "block",
+                  margin: "1rem 0 0 0",
+                  padding: "0.5rem",
+                  borderRadius: "20px",
+                }}
               >
-                <label>Consultation details on:</label>
-                <div className="title">
-                  {record.created_at.toString().slice(0, 10)}
-                </div>
+                <CardContent
+                  className="card-content"
+                  style={{ display: "block" }}
+                  onClick={() => handleSelect(record)}
+                >
+                  <label>Consultation details on:</label>
+                  <div className="title">
+                    {record.created_at.toString().slice(0, 10)}
+                  </div>
 
-                <label>Your quantitative observations:</label>
-                <div className="description">{record.objective}</div>
+                  <label>Your quantitative observations:</label>
+                  <div className="description">{record.objective}</div>
 
-                <label>Your treatment plan: </label>
-                <div className="description">{record.plan}</div>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      })}
+                  <label>Your treatment plan: </label>
+                  <div className="description">{record.plan}</div>
+                </CardContent>
+              </Card>
+            </div>
+          );
+        })}
       {showSideCard && (
         <ConsSideCard selectedRecord={selectedRecord}></ConsSideCard>
       )}
