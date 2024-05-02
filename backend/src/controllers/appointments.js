@@ -199,6 +199,7 @@ const getAppointmentsByDoctor = async (req, res) => {
       `
             SELECT * FROM appointments
             WHERE doctor_id = $1
+            ORDER BY date
         `,
       [req.params.id]
     );
@@ -228,6 +229,7 @@ const getUpcomingAppointmentsByDoctor = async (req, res) => {
       `
               SELECT * FROM appointments
               WHERE doctor_id = $1 AND status = 'PENDING'
+              ORDER BY date
           `,
       [req.params.id]
     );
@@ -257,6 +259,7 @@ const getAppointmentsByPatient = async (req, res) => {
       `
               SELECT * FROM appointments
               WHERE patient_id = $1
+              ORDER BY date
           `,
       [req.params.id]
     );

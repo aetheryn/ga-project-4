@@ -50,6 +50,14 @@ function PatAppointmentCard(props: AppointmentProps): JSX.Element {
     deleteAppointment();
   }
 
+  function formatDate(date: Date): string {
+    const formattedDate = date.toString().slice(0, 10);
+    var nextDate = new Date(formattedDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+
+    return nextDate.toString().slice(0, 10);
+  }
+
   async function deleteAppointment() {
     try {
       const response: any = await fetchData(
@@ -69,11 +77,13 @@ function PatAppointmentCard(props: AppointmentProps): JSX.Element {
 
   return (
     <tr>
-      <td>{appointment.date.toString().slice(0, 10)}</td>
+      <td>{formatDate(appointment.date)}</td>
       <td>{appointment.time.toString().slice(0, 5)}</td>
       <td>{associatedUser.full_name}</td>
       <td>
-        <button onClick={handleClick}>Cancel Appointment</button>
+        <button onClick={handleClick} className="button">
+          Cancel Appointment
+        </button>
       </td>
     </tr>
   );

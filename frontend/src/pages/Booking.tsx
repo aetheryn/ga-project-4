@@ -4,6 +4,7 @@ import { Appointment } from "../classes/appointment";
 import UserContext from "../context/user";
 import PatAppointmentCard from "../components/PatAppointmentCard";
 import { User } from "../classes/user";
+import Calendar from "../components/Calendar";
 
 function Booking(): JSX.Element {
   const fetchData = useFetch();
@@ -11,12 +12,8 @@ function Booking(): JSX.Element {
   const userCtx = useContext(UserContext);
   const [allDoctors, setAllDoctors] = useState<User[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number>(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-  };
 
   const handleTimeSelect = (event: SyntheticEvent): void => {
     const selectElement = event.currentTarget as HTMLOptionElement;
@@ -39,6 +36,7 @@ function Booking(): JSX.Element {
 
       if (response.ok) {
         setAppointments(response.data);
+        console.log(response.data);
       }
     } catch (error: any) {
       console.error(error.message);
@@ -59,6 +57,7 @@ function Booking(): JSX.Element {
   }, []);
 
   async function createAppointment() {
+    console.log(selectedDate);
     try {
       const response: any = await fetchData(
         "/appointments",
@@ -85,55 +84,62 @@ function Booking(): JSX.Element {
   }
 
   return (
-    <div>
+    <div style={{ display: "block" }}>
       <h1>Book an Appointment</h1>
-      <select
-        onChange={(event) => {
-          handleSelectDoctor(event);
-        }}
-      >
-        <option disabled selected>
-          --- Please select a doctor ---
-        </option>
-        {allDoctors.map((doctor) => {
-          return <option value={doctor.id}>{doctor.full_name}</option>;
-        })}
-      </select>
 
-      <label htmlFor="date">Date:</label>
+      <div style={{ margin: "2rem" }}>
+        <h3>Doctor:</h3>
+        <select
+          onChange={(event) => {
+            handleSelectDoctor(event);
+          }}
+          style={{ fontSize: "1rem" }}
+        >
+          <option disabled selected>
+            --- Please select a doctor ---
+          </option>
+          {allDoctors.map((doctor) => {
+            return <option value={doctor.id}>{doctor.full_name}</option>;
+          })}
+        </select>
+      </div>
 
-      <input
-        type="date"
-        id="date"
-        min={new Date().toISOString().split("T")[0]}
-        max={
-          new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-            .toISOString()
-            .split("T")[0]
-        }
-        value={selectedDate.toISOString().split("T")[0]}
-        onChange={(e) => handleDateChange(new Date(e.target.value))}
-      />
+      <div style={{ margin: "2rem 0 2rem 0" }}>
+        <h3>Date:</h3>
+        <Calendar
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        ></Calendar>
+      </div>
 
-      <label htmlFor="time">Time:</label>
+      <div style={{ margin: "2rem 0 2rem 0" }}>
+        <h3>Time:</h3>
+        <select
+          id="time"
+          onChange={(event) => handleTimeSelect(event)}
+          style={{ fontSize: "1rem" }}
+        >
+          <option disabled selected>
+            --- Please select a time ---
+          </option>
+          {[...Array(15)].map((_, i) => {
+            const hour = Math.floor(i / 2) + 9; // Starting from 9
+            const minute = i % 2 === 0 ? "00" : "30"; // Half-hour intervals
+            const time = `${hour.toString().padStart(2, "0")}:${minute}`;
+            return (
+              <option key={i} value={time}>
+                {time}
+              </option>
+            );
+          })}
+        </select>
+      </div>
 
-      <select id="time" onChange={(event) => handleTimeSelect(event)}>
-        <option disabled selected>
-          --- Please select a time ---
-        </option>
-        {[...Array(15)].map((_, i) => {
-          const hour = Math.floor(i / 2) + 9; // Starting from 9
-          const minute = i % 2 === 0 ? "00" : "30"; // Half-hour intervals
-          const time = `${hour.toString().padStart(2, "0")}:${minute}`;
-          return (
-            <option key={i} value={time}>
-              {time}
-            </option>
-          );
-        })}
-      </select>
+      <br />
 
-      <button onClick={handleClick}>Book Appointment</button>
+      <button className="button" onClick={handleClick}>
+        Book Appointment
+      </button>
 
       <h1>Upcoming Appointments</h1>
       <table className="user-table">

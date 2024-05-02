@@ -1,0 +1,47 @@
+.calendar {
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: auto;
+}
+
+.day {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #ccc;
+}
+
+.day:hover {
+  border-color: #78866b;
+  font-weight: 700;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerrow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.headerday {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border: 1px solid #ccc;
+}
+
+.day.empty {
+  visibility: hidden;
+}
+
+.isActive {
+  background-color: #78866b;
+  color: #f4f3ef;
+}
