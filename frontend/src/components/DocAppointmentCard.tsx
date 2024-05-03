@@ -78,6 +78,14 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
     setStatus(selectElement.value);
   }
 
+  function formatDate(date: Date): string {
+    const formattedDate = date.toString().slice(0, 10);
+    var nextDate = new Date(formattedDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+
+    return nextDate.toString().slice(0, 10);
+  }
+
   function formatDisplayedStatus(string: string): string {
     if (string === "PENDING") {
       return "Pending";
@@ -88,7 +96,7 @@ function DocAppointmentCard(props: AppointmentProps): JSX.Element {
 
   return (
     <tr>
-      <td>{appointment.date.toString().slice(0, 10)}</td>
+      <td>{formatDate(appointment.date)}</td>
       <td>{appointment.time.toString().slice(0, 5)}</td>
       <td>{associatedUser.full_name}</td>
       {!isUpdating && (
