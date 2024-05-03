@@ -2,6 +2,11 @@ import styles from "./LeftBar.module.css";
 import { NavLink } from "react-router-dom";
 import UserContext from "../context/user";
 import { useContext } from "react";
+import SpaceDashboardOutlinedIcon from "@mui/icons-material/SpaceDashboardOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import EditCalendarOutlinedIcon from "@mui/icons-material/EditCalendarOutlined";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
 function LeftBar(): JSX.Element {
   const userCtx = useContext(UserContext);
@@ -20,6 +25,7 @@ function LeftBar(): JSX.Element {
             className={(navData) => (navData.isActive ? styles.active : "")}
             to="/main"
           >
+            <SpaceDashboardOutlinedIcon />
             Dashboard
           </NavLink>
         </li>
@@ -31,6 +37,7 @@ function LeftBar(): JSX.Element {
                 className={(navData) => (navData.isActive ? styles.active : "")}
                 to="/users"
               >
+                <PeopleAltOutlinedIcon />
                 Users
               </NavLink>
             </li>
@@ -40,6 +47,7 @@ function LeftBar(): JSX.Element {
                 className={(navData) => (navData.isActive ? styles.active : "")}
                 to="/appointments"
               >
+                <CalendarMonthOutlinedIcon />
                 Appointments
               </NavLink>
             </li>
@@ -53,6 +61,7 @@ function LeftBar(): JSX.Element {
                 className={(navData) => (navData.isActive ? styles.active : "")}
                 to="/booking"
               >
+                <EditCalendarOutlinedIcon />
                 Book Now
               </NavLink>
             </li>
@@ -62,6 +71,7 @@ function LeftBar(): JSX.Element {
                 className={(navData) => (navData.isActive ? styles.active : "")}
                 to="/appointments"
               >
+                <CalendarMonthOutlinedIcon />
                 Appointments
               </NavLink>
             </li>
@@ -73,6 +83,7 @@ function LeftBar(): JSX.Element {
             className={(navData) => (navData.isActive ? styles.active : "")}
             to="/profile"
           >
+            <AccountBoxOutlinedIcon />
             Profile
           </NavLink>
         </li>
