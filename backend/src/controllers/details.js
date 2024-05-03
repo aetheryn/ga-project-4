@@ -90,7 +90,7 @@ const updateDetails = async (req, res) => {
     );
 
     if (detail.rows[0].doctor_id != req.decoded.id) {
-      return res.status(401).json({ status: "error", msg: "Blah." });
+      return res.status(401).json({ status: "error", msg: "Unauthorised." });
     }
 
     await client.query(
