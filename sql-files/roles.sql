@@ -1,0 +1,6 @@
+CREATE TABLE roles (
+	role VARCHAR(7) NOT NULL PRIMARY KEY
+);
+
+INSERT INTO roles(role) VALUES ('DOCTOR');
+INSERT INTO roles(role) VALUES ('PATIENT');
