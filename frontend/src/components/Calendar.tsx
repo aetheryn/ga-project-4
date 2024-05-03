@@ -1,4 +1,4 @@
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import styles from "./Calendar.module.css";
 
 interface CalendarProps {
@@ -7,6 +7,7 @@ interface CalendarProps {
 
 function Calendar({ setSelectedDate }: CalendarProps) {
   const today: Date = new Date();
+  const todaysDate: number = today.getDate();
   const month: number = today.getMonth();
   const year: number = today.getFullYear();
   const numOfDays: number = new Date(year, month + 1, 0).getDate();
@@ -25,11 +26,13 @@ function Calendar({ setSelectedDate }: CalendarProps) {
   const dayOfWeekFirstDay: number = firstDayOfMonth.getDay();
 
   function handleDayClick(event: SyntheticEvent, day: number): void {
-    const date = new Date(year, month, day, 8, 0).toISOString().slice(0, 10);
-    setSelectedDate(date);
-    addActiveClass(event);
-    console.log(numOfDays);
-    console.log(date);
+    const selectedDiv = event.currentTarget as HTMLDivElement;
+    if (!selectedDiv.classList.contains(styles["unclickable"])) {
+      const date = new Date(year, month, day, 8, 0).toISOString().slice(0, 10);
+      setSelectedDate(date);
+      addActiveClass(event);
+      console.log(date);
+    }
   }
 
   function addActiveClass(event: SyntheticEvent): void {
@@ -41,6 +44,19 @@ function Calendar({ setSelectedDate }: CalendarProps) {
     const selectedElement = event.currentTarget;
     selectedElement.classList.add(styles["isActive"]);
   }
+
+  function addUnclickableClass(): void {
+    const elements = document.getElementsByClassName(styles["day"]);
+    for (let i = 0; i < elements.length; i++) {
+      if (Number(elements[i].innerHTML) <= todaysDate) {
+        elements[i].classList.add(styles["unclickable"]);
+      }
+    }
+  }
+
+  useEffect(() => {
+    addUnclickableClass(), [];
+  });
 
   function generateCalendarRows() {
     const rows = [];

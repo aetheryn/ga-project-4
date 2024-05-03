@@ -45,3 +45,13 @@
   background-color: #78866b;
   color: #f4f3ef;
 }
+
+.unclickable {
+  background-color: gray;
+}
+
+.unclickable:hover {
+  border: 1px solid #ccc;
+  font-weight: 400;
+  color: #383838;
+}
