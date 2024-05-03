@@ -1,5 +1,4 @@
 #root {
-  /* width: 1280px; */
   margin: 0 auto;
   padding: 1em;
   text-align: center;
@@ -7,7 +6,6 @@
 
 .main {
   margin-left: 15%;
-  /* margin-right: 25%; */
 }
 
 .fullwidth {
@@ -246,7 +244,7 @@ select:focus {
   top: 100%;
   left: 0;
   right: 0;
-  background: #d0d9cd;
+  background: white;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -258,8 +256,7 @@ select:focus {
 }
 
 .suggestions-list li:hover {
-  background-color: #687169;
-  color: white;
+  background-color: #d0d9cd;
 }
 
 .consultdates:hover {

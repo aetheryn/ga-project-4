@@ -15,7 +15,7 @@
 }
 
 li > a {
-  display: grid;
+  display: flex;
   text-decoration: none;
   color: #78866b;
   margin: auto;
@@ -24,9 +24,11 @@ li > a {
   font-size: large;
   width: 80%;
   text-align: left;
-  text-indent: 1rem;
+  padding-left: 1rem;
   border-radius: 20px;
   border: white solid;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 li > a:hover {
