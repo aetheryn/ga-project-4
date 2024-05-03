@@ -42,8 +42,7 @@ function App() {
 
   useEffect(() => {
     getAllUsers();
-    console.log(loggedInUser);
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <UserContext.Provider
@@ -80,7 +79,6 @@ function App() {
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
-          {/* <RightBar></RightBar> */}
         </>
       )}
 
@@ -102,7 +100,6 @@ function App() {
               <Route path="*" element={<Navigate replace to="/main" />} />
             </Routes>
           </div>
-          {/* <RightBar></RightBar> */}
         </>
       )}
     </UserContext.Provider>
