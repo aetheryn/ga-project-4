@@ -16,6 +16,7 @@
 .day:hover {
   border-color: #78866b;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .row {
@@ -54,4 +55,5 @@
   border: 1px solid #ccc;
   font-weight: 400;
   color: #383838;
+  cursor: not-allowed;
 }
